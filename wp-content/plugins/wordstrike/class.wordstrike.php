@@ -29,8 +29,30 @@ class wordStrike {
     			part varchar(64),
     			phonetic varchar(64),
     			create_time timestamp not null default current_timestamp,
-    			activation bit(1) default 1,
+    			activation bit(1) not null default 1,
     			UNIQUE KEY word_name (word_name)
+    			) DEFAULT CHARSET=utf8;
+def;
+        self::$sql_array['words_books'] = <<<def
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}words_books` (
+    			id int NOT NULL PRIMARY KEY auto_increment,
+    			uid int NOT NULL,
+    			name varchar(128) not null,
+    			create_time timestamp not null default current_timestamp,
+    			activation bit(1) not null default 1,
+    			UNIQUE KEY word_name (word_name),
+    			key uid (uid)
+    			) DEFAULT CHARSET=utf8;
+def;
+        self::$sql_array['words_books_words'] = <<<def
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}words_books_words` (
+    			books_id int NOT NULL,
+    			words_id int NOT NULL,
+    			level int not null,
+    			create_time timestamp not null default current_timestamp,
+    			activation bit(1) not null default 1,
+    			key books_id (books_id)
+    			key words_id (words_id)
     			) DEFAULT CHARSET=utf8;
 def;
 
