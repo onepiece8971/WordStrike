@@ -2,12 +2,28 @@
 
 require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
 
-class wordStrike {
-
+/**
+ * Wordstrike插件主类.
+ */
+class Wordstrike
+{
+    /**
+     * 数据库表前缀.
+     *
+     * @var string
+     */
     public static $table_prefix = 'ws_';
 
+    /**
+     * ql集合.
+     *
+     * @var array
+     */
     private static $sql_array = array();
 
+    /**
+     * 插件初始化
+     */
     public static function init()
     {
         if (empty(self::$sql_array)) {
@@ -18,6 +34,9 @@ class wordStrike {
         }
     }
 
+    /**
+     * 新建sql
+     */
     private function createSql()
     {
         $table_prefix = self::$table_prefix;
@@ -26,10 +45,10 @@ class wordStrike {
     			id int NOT NULL PRIMARY KEY auto_increment,
     			word_name varchar(64) not null,
     			means varchar(256) not null,
-    			part varchar(64),
-    			phonetic varchar(64),
-    			create_time timestamp not null default current_timestamp,
-    			activation bit(1) not null default 1,
+    			part varchar(64) comment '词性',
+    			phonetic varchar(64) comment '音标',
+    			voice varchar(128),
+    			act bit(1) not null default 1,
     			UNIQUE KEY word_name (word_name)
     			) DEFAULT CHARSET=utf8;
 def;
@@ -39,7 +58,7 @@ def;
     			uid int NOT NULL,
     			name varchar(128) not null,
     			create_time timestamp not null default current_timestamp,
-    			activation bit(1) not null default 1,
+    			act bit(1) not null default 1,
     			UNIQUE KEY word_name (word_name),
     			key uid (uid)
     			) DEFAULT CHARSET=utf8;
@@ -50,14 +69,20 @@ def;
     			words_id int NOT NULL,
     			level int not null,
     			create_time timestamp not null default current_timestamp,
-    			activation bit(1) not null default 1,
-    			key books_id (books_id)
-    			key words_id (words_id)
+    			act bit(1) not null default 1,
+    			KEY books_id (books_id)
+    			KEY words_id (words_id)
     			) DEFAULT CHARSET=utf8;
 def;
 
     }
 
+    /**
+     * 新建表
+     *
+     * @param $table_name
+     * @param $sql
+     */
     public function createTable($table_name, $sql)
     {
         global $wpdb;
