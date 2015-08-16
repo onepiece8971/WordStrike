@@ -40,6 +40,7 @@ class Wordstrike
     private function createSql()
     {
         $table_prefix = self::$table_prefix;
+        //单词表
         self::$sql_array['words'] = <<<def
             CREATE TABLE IF NOT EXISTS `{$table_prefix}words` (
     			id int NOT NULL PRIMARY KEY auto_increment,
@@ -47,31 +48,53 @@ class Wordstrike
     			means varchar(256) not null,
     			part varchar(64) comment '词性',
     			phonetic varchar(64) comment '音标',
-    			voice varchar(128),
+    			voice varchar(128) comment '音频地址',
     			act bit(1) not null default 1,
     			UNIQUE KEY word_name (word_name)
     			) DEFAULT CHARSET=utf8;
 def;
+        //单词本表
         self::$sql_array['words_books'] = <<<def
             CREATE TABLE IF NOT EXISTS `{$table_prefix}words_books` (
     			id int NOT NULL PRIMARY KEY auto_increment,
-    			uid int NOT NULL,
     			name varchar(128) not null,
-    			create_time timestamp not null default current_timestamp,
-    			act bit(1) not null default 1,
-    			UNIQUE KEY word_name (word_name),
-    			key uid (uid)
+    			create_time int(10) not null,
+    			act bit(1) not null default 1
     			) DEFAULT CHARSET=utf8;
 def;
+        //单词本与单词关联表
         self::$sql_array['words_books_words'] = <<<def
             CREATE TABLE IF NOT EXISTS `{$table_prefix}words_books_words` (
     			books_id int NOT NULL,
     			words_id int NOT NULL,
-    			level int not null,
-    			create_time timestamp not null default current_timestamp,
-    			act bit(1) not null default 1,
-    			KEY books_id (books_id)
+    			KEY books_id (books_id),
     			KEY words_id (words_id)
+    			) DEFAULT CHARSET=utf8;
+def;
+        //背词表
+        self::$sql_array['recite'] = <<<def
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}recite` (
+    			words_id int NOT NULL,
+    			uid INT NOT NULL,
+    			level int(2) not null default 0,
+    			create_time int(10) not null,
+    			update_time int(10) not null,
+    			act bit(1) not null default 1,
+    			KEY uid (uid),
+    			KEY words_id (words_id),
+    			KEY create_time (create_time),
+    			KEY update_time (update_time)
+    			) DEFAULT CHARSET=utf8;
+def;
+        //用户单词本表
+        self::$sql_array['user_words_books'] = <<<def
+            CREATE TABLE IF NOT EXISTS `{$table_prefix}user_words_books` (
+    			books_id int NOT NULL,
+    			uid int NOT NULL,
+    			create_time int(10) not null,
+    			act bit(1) not null default 1,
+    			KEY books_id (books_id),
+    			KEY uid (uid)
     			) DEFAULT CHARSET=utf8;
 def;
 
