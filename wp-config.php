@@ -25,8 +25,8 @@ define('DB_USER', 'zcl');
 define('DB_PASSWORD', '123456');
 
 /** MySQL hostname */
-//define('DB_HOST', '172.20.5.24');
-define('DB_HOST', '192.168.0.101');
+define('DB_HOST', '172.20.5.24');
+//define('DB_HOST', '192.168.0.101');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
