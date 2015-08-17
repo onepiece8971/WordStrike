@@ -7,10 +7,10 @@ class study
             $books_id = 1;
         }
         global $wpdb;
-        $querystr = "SELECT words_id FROM ".Wordstrike::$table_prefix."words_books_words where books_id = ".$books_id." order by rand() limit 1";
-        $words_id = $wpdb->get_var($querystr);
-        $queryword = "SELECT * FROM ".Wordstrike::$table_prefix."words where id = ".$words_id;
-        return $wpdb->get_row($queryword, ARRAY_A);
+        $query_id = "SELECT words_id FROM ".Wordstrike::$table_prefix."words_books_words WHERE books_id = ".$books_id." ORDER BY rand() limit 1";
+        $words_id = $wpdb->get_var($query_id);
+        $queryid_word = "SELECT word_name, means, part, phonetic, voice FROM ".Wordstrike::$table_prefix."words WHERE id = ".$words_id;
+        return $wpdb->get_row($queryid_word, ARRAY_A);
     }
 }
 
