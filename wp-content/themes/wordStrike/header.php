@@ -5,5 +5,5 @@
     <link rel="stylesheet" type="text/css" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/style.css">
 	<script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/jquery-1.11.3.min.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/semantic.min.js"></script>
-	<?php wp_head(); ?>
+    <title>WorkStrike</title>
 </head>

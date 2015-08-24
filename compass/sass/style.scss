@@ -1,5 +1,29 @@
-$color : brown;
+$imagesUrl : "../images/";
 
-.test {
-  color: $color;
+.masthead {
+  height: 60%;
+  background-image: url($imagesUrl + "12.jpg");
+  //background-position: center bottom;
+}
+
+.ui.middlebig {
+  padding-top: 12rem;
+}
+
+.margin100px {
+  display: block;
+  margin-top: 100px;
+}
+
+h1 span.library {
+  display: block;
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+div.ui.container {
+  margin: 2em 0 2em;
+  button.fluid.ui.button {
+    margin-top: 1.5em;
+  }
 }
