@@ -32,9 +32,9 @@
                     </h4>
                 </td>
                 <td>
-                    <?php $isMyWordsBook = isMyWordsBook($uid, $book['uid']) ?>
-                    <button class="ui compact icon button green mini toggle <?php if ($isMyWordsBook) echo 'red' ?>">
-                        <i class="icon <?php if ($isMyWordsBook) {echo 'minus';} else {echo 'plus';} ?>"></i>
+                    <?php $isMyWordsBook = isMyWordsBook($uid, $book['id']) ?>
+                    <button class="ui compact icon button green mini toggle <?php if (!$isMyWordsBook) echo 'red' ?>" uid="<?php echo $uid; ?>" books_id="<?php echo $book['id']; ?>">
+                        <i class="icon <?php if ($isMyWordsBook) {echo 'plus';} else {echo 'minus';} ?>"></i>
                     </button>
                 </td>
             </tr>
@@ -51,6 +51,23 @@
     semantic.ready = function () {
         // selector cache
         var $toggle = $('.ui.toggle.button');
+
+        handler = {
+            activate: function() {
+                var nonce = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
+                      url = "<?php echo admin_url('admin-ajax.php'); ?>",
+                      uid = $(this).attr('uid'),
+                      books_id = $(this).attr('books_id');
+                $.post(
+                    url,
+                    {_ajax_nonce:  nonce, action: 'del_my_words_book', uid: uid, books_id: books_id},
+                    function(result){
+                        console.log(result);
+                    }
+                );
+//                console.log(books_id);
+            }
+        };
         $toggle.state({
             text: {
                 inactive: '<i class="icon plus"></i>',
@@ -60,6 +77,7 @@
                 active: 'red'
             }
         });
+        $toggle.on('click', handler.activate)
     };
     // attach ready event
     $(document).ready(semantic.ready);

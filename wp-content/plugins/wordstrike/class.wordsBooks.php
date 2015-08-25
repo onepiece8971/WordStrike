@@ -27,6 +27,15 @@ class wordsBooks
         $row = $wpdb->get_row($query);
         return empty($row);
     }
+
+    public function delMyWordsBook($uid,  $bookId)
+    {
+        global $wpdb;
+        return $wpdb->delete(
+            Wordstrike::$table_prefix."user_words_books",
+            array('books_id' => $bookId, 'uid' => $uid)
+            );
+    }
 }
 
 function getWordsBooks()
@@ -39,4 +48,10 @@ function isMyWordsBook($uid, $bookId)
 {
     $wordsBooks = new wordsBooks;
     return $wordsBooks->isMyWordsBook($uid, $bookId);
+}
+
+function delMyWordsBook($uid, $bookId)
+{
+    $wordsBooks = new wordsBooks;
+    return $wordsBooks->delMyWordsBook($uid, $bookId);
 }
