@@ -1,1 +1,32 @@
-.masthead{height:60%;background-image:url("../images/12.jpg")}.ui.middlebig{padding-top:12rem}.margin100px{display:block;margin-top:100px}h1 span.library{display:block;font-size:1.75em;font-weight:bold}div.ui.container{margin:2em 0 2em}div.ui.container button.fluid.ui.button{margin-top:1.5em}
+/* line 3, ../../../../compass/sass/style.scss */
+.masthead {
+  height: 60%;
+  background-image: url("../images/12.jpg");
+}
+
+/* line 9, ../../../../compass/sass/style.scss */
+.ui.middlebig {
+  padding-top: 12rem;
+}
+
+/* line 13, ../../../../compass/sass/style.scss */
+.margin100px {
+  display: block;
+  margin-top: 100px;
+}
+
+/* line 18, ../../../../compass/sass/style.scss */
+h1 span.library {
+  display: block;
+  font-size: 1.75em;
+  font-weight: bold;
+}
+
+/* line 24, ../../../../compass/sass/style.scss */
+div.ui.container {
+  margin: 2em 0 2em;
+}
+/* line 26, ../../../../compass/sass/style.scss */
+div.ui.container a.fluid.ui.button {
+  margin-top: 1.5em;
+}

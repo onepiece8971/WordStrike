@@ -14,74 +14,31 @@
         <thead>
         <tr>
             <th>生词本</th>
-            <th>添加</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <h4 class="ui image header">
-                    <img class="ui mini rounded image" src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/address_book.png">
-                    <div class="content">
-                        Lena
-                        <div class="sub header">Human Resources
-                        </div>
-                    </div>
-                </h4></td>
-            <td>
-                <button class="ui compact icon button green mini toggle">
-                    <i class="icon plus"></i>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h4 class="ui image header">
-                    <img class="ui mini rounded image" src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/address_book.png">
-                    <div class="content">
-                        Matthew
-                        <div class="sub header">Fabric Design
-                        </div>
-                    </div>
-                </h4></td>
-            <td>
-                <button class="ui compact icon button green mini">
-                    <i class="icon plus"></i>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h4 class="ui image header">
-                    <img class="ui mini rounded image" src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/address_book.png">
-                    <div class="content">
-                        Lindsay
-                        <div class="sub header">Entertainment
-                        </div>
-                    </div>
-                </h4></td>
-            <td>
-                <button class="ui compact icon button green mini">
-                    <i class="icon plus"></i>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h4 class="ui image header">
-                    <img class="ui mini rounded image" src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/address_book.png">
-                    <div class="content">
-                        Mark
-                        <div class="sub header">Executive
-                        </div>
-                    </div>
-                </h4></td>
-            <td>
-                <button class="ui compact icon button green mini">
-                    <i class="icon plus"></i>
-                </button>
-            </td>
-        </tr>
+        <?php
+        $books = getWordsBooks();
+        $current_user = wp_get_current_user();
+        $uid = $current_user->ID;
+        ?>
+        <?php foreach ($books as $book) : ?>
+            <tr>
+                <td>
+                    <h4 class="ui image header">
+                        <img class="ui mini rounded image" src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/address_book.png">
+                        <div class="content"><?php echo $book['name'] ?></div>
+                    </h4>
+                </td>
+                <td>
+                    <?php $isMyWordsBook = isMyWordsBook($uid, $book['uid']) ?>
+                    <button class="ui compact icon button green mini toggle <?php if ($isMyWordsBook) echo 'red' ?>">
+                        <i class="icon <?php if ($isMyWordsBook) {echo 'minus';} else {echo 'plus';} ?>"></i>
+                    </button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>

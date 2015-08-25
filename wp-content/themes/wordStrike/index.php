@@ -5,9 +5,9 @@
     <h1 class="ui center aligned header inverted middlebig"><span class="library">WordStrike</span></h1>
 </div>
 <div class="ui text container">
-    <a class="fluid ui button green" href="<?php echo site_url()."/?page_id=23" ?>">Fits container</a>
-    <button class="fluid ui button teal">Fits container</button>
-    <button class="fluid ui button">Fits container</button>
+    <a class="fluid ui button green" href="<?php echo site_url()."/wordsbooks/" ?>">Fits container</a>
+    <a class="fluid ui button teal">Fits container</a>
+    <a class="fluid ui button" href="<?php echo site_url()."/wordsbooks/" ?>">添加生词本</a>
 </div>
 </body>
 </html>
