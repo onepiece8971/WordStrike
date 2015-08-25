@@ -20,10 +20,13 @@ class wordsBooks
      * @param $bookId
      * @return bool
      */
-    public function isMyWordsBook($uid,  $bookId)
+    public function isMyWordsBook($uid,  $bookId, $act = 1)
     {
         global $wpdb;
-        $query = "SELECT * FROM ".Wordstrike::$table_prefix."user_words_books where act = 1 and books_id = ".$bookId." and uid = ".$uid;
+        $query = "SELECT * FROM ".Wordstrike::$table_prefix."user_words_books where act = ".$act." and books_id = ".$bookId." and uid = ".$uid;
+        if (null === $act) {
+            $query = "SELECT * FROM ".Wordstrike::$table_prefix."user_words_books where books_id = ".$bookId." and uid = ".$uid;
+        }
         $row = $wpdb->get_row($query);
         return empty($row);
     }
@@ -31,10 +34,33 @@ class wordsBooks
     public function delMyWordsBook($uid,  $bookId)
     {
         global $wpdb;
-        return $wpdb->delete(
+        return $wpdb->update(
             Wordstrike::$table_prefix."user_words_books",
-            array('books_id' => $bookId, 'uid' => $uid)
+            array('act' => 0),
+            array('books_id' => $bookId, 'uid' => $uid),
+            array('%d'),
+            array('%d', '%d')
             );
+    }
+
+    public function addMyWordsBook($uid,  $bookId)
+    {
+        global $wpdb;
+        if ($this->isMyWordsBook($uid,  $bookId, null)) {
+            return $wpdb->insert(
+                Wordstrike::$table_prefix."user_words_books",
+                array('books_id' => $bookId, 'uid' => $uid, 'act' => 1, 'create_time' => time()),
+                array('%d', '%d', '%d')
+            );
+        } else {
+            return $wpdb->update(
+                Wordstrike::$table_prefix."user_words_books",
+                array('act' => 1),
+                array('books_id' => $bookId, 'uid' => $uid),
+                array('%d'),
+                array('%d', '%d')
+            );
+        }
     }
 }
 
@@ -54,4 +80,10 @@ function delMyWordsBook($uid, $bookId)
 {
     $wordsBooks = new wordsBooks;
     return $wordsBooks->delMyWordsBook($uid, $bookId);
+}
+
+function addMyWordsBook($uid, $bookId)
+{
+    $wordsBooks = new wordsBooks;
+    return $wordsBooks->addMyWordsBook($uid, $bookId);
 }

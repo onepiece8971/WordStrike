@@ -53,21 +53,32 @@
         var $toggle = $('.ui.toggle.button');
 
         handler = {
+            nonce : "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
+            url : "<?php echo admin_url('admin-ajax.php'); ?>",
             activate: function() {
-                var nonce = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
-                      url = "<?php echo admin_url('admin-ajax.php'); ?>",
-                      uid = $(this).attr('uid'),
+                var uid = $(this).attr('uid'),
                       books_id = $(this).attr('books_id');
-                $.post(
-                    url,
-                    {_ajax_nonce:  nonce, action: 'del_my_words_book', uid: uid, books_id: books_id},
-                    function(result){
-                        console.log(result);
-                    }
-                );
-//                console.log(books_id);
+                if ($(this).hasClass('red')) {
+                    $.post(
+                        handler.url,
+                        {_ajax_nonce:  handler.nonce, action: 'del_my_words_book', uid: uid, books_id: books_id},
+                        function(result){
+                            console.log(result);
+                        }
+                    );
+                } else {
+                    $.post(
+                        handler.url,
+                        {_ajax_nonce:  handler.nonce, action: 'add_my_words_book', uid: uid, books_id: books_id},
+                        function(result){
+                            console.log(result);
+                        }
+                    );
+                }
+//                console.log($(this).hasClass('red'));
             }
         };
+        $toggle.on('click', handler.activate);
         $toggle.state({
             text: {
                 inactive: '<i class="icon plus"></i>',
@@ -77,7 +88,6 @@
                 active: 'red'
             }
         });
-        $toggle.on('click', handler.activate)
     };
     // attach ready event
     $(document).ready(semantic.ready);
