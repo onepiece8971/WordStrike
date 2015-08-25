@@ -1,6 +1,11 @@
 <?php
 class wordsBooks
 {
+    /**
+     * 获取数据库里的生词本.
+     *
+     * @return mixed
+     */
     public function getWordsBooks()
     {
         global $wpdb;
