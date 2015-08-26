@@ -58,6 +58,8 @@ def;
             CREATE TABLE IF NOT EXISTS `{$table_prefix}words_books` (
     			id int NOT NULL PRIMARY KEY auto_increment,
     			name varchar(128) not null,
+    			content varchar(128),
+    			img_url varchar(128),
     			create_time int(10) not null,
     			act bit(1) not null default 1
     			) DEFAULT CHARSET=utf8;

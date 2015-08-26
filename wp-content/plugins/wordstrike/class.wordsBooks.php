@@ -9,7 +9,7 @@ class wordsBooks
     public function getWordsBooks()
     {
         global $wpdb;
-        $query = "SELECT id, name FROM ".Wordstrike::$table_prefix."words_books where act = 1 ORDER BY create_time desc";
+        $query = "SELECT id, name, content, img_url FROM ".Wordstrike::$table_prefix."words_books where act = 1 ORDER BY create_time desc";
         return $wpdb->get_results($query, ARRAY_A);
     }
 

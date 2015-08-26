@@ -9,7 +9,7 @@
 <div class="masthead">
     <h1 class="ui center aligned header inverted middlebig"><span class="library">WordStrike</span></h1>
 </div>
-<div class="ui container">
+<div class="ui container text">
     <table class="ui celled table">
         <thead>
         <tr>
@@ -27,8 +27,11 @@
             <tr>
                 <td>
                     <h4 class="ui image header">
-                        <img class="ui mini rounded image" src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/address_book.png">
-                        <div class="content"><?php echo $book['name'] ?></div>
+                        <img class="ui mini rounded image" src="<?php echo $book['img_url']; ?>">
+                        <div class="content">
+                            <?php echo $book['name'] ?>
+                            <div class="sub header"><?php echo $book['content']; ?></div>
+                        </div>
                     </h4>
                 </td>
                 <td>
