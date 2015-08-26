@@ -115,4 +115,20 @@ def;
             dbDelta($sql);
         }
     }
+
+    /**
+     * 多维数组关键字转一维数组
+     *
+     * @param $array
+     * @param $key
+     * @return array
+     */
+    public static function getArrayValues($array, $key)
+    {
+        $new_array = array();
+        foreach ($array as $arr) {
+            array_push($new_array, $arr[$key]);
+        }
+        return $new_array;
+    }
 }
