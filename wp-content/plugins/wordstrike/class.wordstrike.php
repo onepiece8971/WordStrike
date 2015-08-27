@@ -78,7 +78,8 @@ def;
             CREATE TABLE IF NOT EXISTS `{$table_prefix}recite` (
     			words_id int NOT NULL,
     			uid INT NOT NULL,
-    			level int(2) not null default 0,
+    			level int(2) not null default 1,
+    			level_time int(9) not null default 300,
     			create_time int(10) not null,
     			update_time int(10) not null,
     			act bit(1) not null default 1,

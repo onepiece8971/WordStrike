@@ -7,7 +7,7 @@
 <html>
 <?php get_header(); ?>
 <body>
-<?php $word = randOneWord(); ?>
+<?php $word = getOneReviewWord(); ?>
 <?php if (null == $word) : ?>
     <div class="margin100px">
         <h1 class="ui center aligned header">您已完成现阶段复习</h1>
