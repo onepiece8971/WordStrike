@@ -2,6 +2,15 @@
 class study
 {
 
+    private $uid;
+
+    public function __construct()
+    {
+        if (empty($this->uid)) {
+            $current_user = wp_get_current_user();
+            $this->uid = $current_user->ID;
+        }
+    }
     /**
      * 随机获取生词本中一个未背的单词.
      *
@@ -15,7 +24,7 @@ class study
         }
         global $wpdb;
         //取出背词表的所有words_ids, 并拼接为字符串
-        $query_recite = "SELECT words_id FROM ".Wordstrike::$table_prefix."recite WHERE act != 0";
+        $query_recite = "SELECT words_id FROM ".Wordstrike::$table_prefix."recite WHERE uid = ".$this->uid." AND act != 0";
         $words_ids = $wpdb->get_results($query_recite, ARRAY_A);
         $words_ids = Wordstrike::getArrayValues($words_ids, 'words_id');
         $count = count($words_ids);
@@ -39,10 +48,8 @@ class study
      */
     public function isMyRecite($words_id)
     {
-        $current_user = wp_get_current_user();
-        $uid = $current_user->ID;
         global $wpdb;
-        $query = "SELECT * FROM ".Wordstrike::$table_prefix."recite WHERE words_id = ".$words_id." AND uid = ".$uid;
+        $query = "SELECT * FROM ".Wordstrike::$table_prefix."recite WHERE words_id = ".$words_id." AND uid = ".$this->uid;
         $result = $wpdb->get_row($query);
         return empty($result);
     }
@@ -56,24 +63,30 @@ class study
      */
     public function addRecite($words_id, $level = 1)
     {
-        $current_user = wp_get_current_user();
-        $uid = $current_user->ID;
         global $wpdb;
         if ($this->isMyRecite($words_id)) {
             return $wpdb->insert(
                 Wordstrike::$table_prefix."recite",
-                array('words_id' => $words_id, 'uid' => $uid, 'level' => $level, 'create_time' => time(), 'update_time' => time(), 'act' => 1),
+                array('words_id' => $words_id, 'uid' => $this->uid, 'level' => $level, 'create_time' => time(), 'update_time' => time(), 'act' => 1),
                 array('%d', '%d', '%d', '%d', '%d', '%d')
             );
         } else {
             return $wpdb->update(
                 Wordstrike::$table_prefix."recite",
                 array('act' => 1, 'level' => $level),
-                array('words_id' => $words_id, 'uid' => $uid),
+                array('words_id' => $words_id, 'uid' => $this->uid),
                 array('%d', '%d'),
                 array('%d', '%d')
             );
         }
+    }
+
+    public function getOneReviewWord()
+    {
+        //todo 随机一组复习单词
+        global $wpdb;
+        $query = "SELECT id, word_name, means, part, phonetic, voice FROM ".Wordstrike::$table_prefix."words WHERE id = ".$words_id;
+        return $wpdb->get_results($query, ARRAY_A);
     }
 }
 

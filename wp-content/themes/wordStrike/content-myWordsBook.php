@@ -30,7 +30,7 @@
                     <h4 class="ui image header">
                         <img class="ui mini rounded image" src="<?php echo $book['img_url']; ?>">
                         <div class="content">
-                            <?php echo $book['name'] ?>
+                            <a href="<?php echo site_url()."/study/?b=".$book['id'] ?>"><?php echo $book['name'] ?></a>
                             <div class="sub header"><?php echo $book['content']; ?></div>
                         </div>
                     </h4>
