@@ -68,7 +68,9 @@ class words
                     $word = file_get_contents($url.$word_name);
                     $word = json_decode($word, true);
                     $word = $word['data'];
-                    $this->insertOneWord($word['word_name'], $word['phonetic'], $word['means']);
+                    if (!empty($word)) {
+                        $this->insertOneWord($word['word_name'], $word['phonetic'], $word['means']);
+                    }
                 }
             }
             return true;

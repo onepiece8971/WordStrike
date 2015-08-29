@@ -30,3 +30,12 @@ div.ui.container {
 div.ui.container a.fluid.ui.button {
   margin-top: 1.5em;
 }
+
+/* line 31, ../../../../compass/sass/style.scss */
+#play {
+  cursor: pointer;
+}
+/* line 33, ../../../../compass/sass/style.scss */
+#play:hover {
+  background-color: #21ba45;
+}

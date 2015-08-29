@@ -15,7 +15,14 @@
 <?php else : ?>
 <div class="margin100px">
     <h1 class="ui center aligned header"><?php echo $word['word_name']; ?></h1>
-    <h4 class="ui center aligned header"><?php echo $word['phonetic']; ?></h4>
+    <h4 class="ui center aligned header"><span id="play"><?php echo $word['phonetic']; ?></span></h4>
+    <audio src=
+    <?php if (empty($word['voice'])) : ?>
+        "http://dict.youdao.com/dictvoice?audio=<?php echo $word['word_name']; ?>&type=2"
+    <?php else : ?>
+        <?php echo $word['voice']; ?>
+    <?php endif; ?>
+    >对不起,您的浏览器已经跟不上时代,请下载最新的现代浏览器</audio>
 </div>
 <div class="ui text container">
     <div class="ui segments">
@@ -56,6 +63,12 @@
             }
         };
         $add.on('click', handler.add);
+
+        $('#play').click(function(){
+            $('audio')[0].play();
+        }).mouseover(function(){
+            $('audio')[0].play();
+        })
     };
     $(document).ready(semantic.ready);
 </script>

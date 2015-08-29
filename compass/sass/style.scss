@@ -27,3 +27,10 @@ div.ui.container {
     margin-top: 1.5em;
   }
 }
+
+#play {
+  cursor: pointer;
+  &:hover {
+    background-color: #21ba45;
+  }
+}

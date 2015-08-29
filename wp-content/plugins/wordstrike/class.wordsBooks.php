@@ -94,12 +94,20 @@ class wordsBooks
         }
     }
 
+    /**
+     * 导入生词本.
+     *
+     * @param $book_id
+     * @return bool|string
+     */
     public function addWordsBook($book_id)
     {
+        set_time_limit(0);
         global $wpdb;
         $ob_words = new words;
         $p = @fopen("/Users/chenglinz/index/WordStrike/wp-content/themes/wordStrike/books/book.txt", "r");
         if ($p) {
+            $words_ids = $this->getWordsIdsByBooksId($book_id);
             $words = array();
             while (!feof($p)) {
                 $words[] = rtrim(fgets($p));
@@ -108,7 +116,7 @@ class wordsBooks
             if ($ob_words->addWords($words)) {
                 foreach ($words as $word) {
                     $w = $ob_words->getWordByWordName($word);
-                    if ($w) {
+                    if ($w && !in_array($w['id'], $words_ids)) {
                         $wpdb->insert(
                             Wordstrike::$table_prefix . 'words_books_words',
                             array(
@@ -126,9 +134,18 @@ class wordsBooks
         }
     }
 
-    public function isWordsBooksWord()
+    /**
+     * 通过books_id获取该生词本所有words_id.
+     *
+     * @param $books_id
+     * @return array
+     */
+    public function getWordsIdsByBooksId($books_id)
     {
-        //todo
+        global $wpdb;
+        $query = "SELECT words_id FROM ".Wordstrike::$table_prefix."words_books_words WHERE books_id = ".$books_id;
+        $words_ids = $wpdb->get_results($query, ARRAY_A);
+        return Wordstrike::getArrayValues($words_ids, 'words_id');
     }
 }
 
