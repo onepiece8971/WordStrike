@@ -84,9 +84,9 @@ class study
         } else {
             return $wpdb->update(
                 Wordstrike::$table_prefix."recite",
-                array('act' => 1, 'level' => $level, 'level_time' => self::$level[$level]),
+                array('act' => 1, 'level' => $level, 'level_time' => self::$level[$level], 'update_time' => time()),
                 array('words_id' => $words_id, 'uid' => $this->uid),
-                array('%d', '%d', '%d'),
+                array('%d', '%d', '%d', '%d'),
                 array('%d', '%d')
             );
         }
@@ -118,6 +118,61 @@ class study
         $words_id = $wpdb->get_var($query);
         return $this->getWordById($words_id);
     }
+
+    /**
+     * 获取当前用户的一个单词等级
+     *
+     * @param $words_id
+     * @return mixed
+     */
+    public function getLevelById($words_id)
+    {
+        global $wpdb;
+        $query = "SELECT `level` FROM ".Wordstrike::$table_prefix."recite WHERE words_id = ".$words_id." AND uid = ".$this->uid." AND act = 1";
+        return $wpdb->get_var($query);
+    }
+
+    /**
+     * 升级单词.
+     *
+     * @param $words_id
+     * @return mixed
+     */
+    public function upgradeReciteWord($words_id)
+    {
+        global $wpdb;
+        $level = $this->getLevelById($words_id); //获取单词当前等级
+        if (8 == $level || 0 == $level) {
+            $level = 0;
+        } else {
+            ++$level;
+        }
+        return $wpdb->update(
+            Wordstrike::$table_prefix."recite",
+            array('level' => $level, 'level_time' => self::$level[$level], 'update_time' => time()),
+            array('words_id' => $words_id, 'uid' => $this->uid),
+            array('%d', '%d', '%d'),
+            array('%d', '%d')
+        );
+    }
+
+    /**
+     * 忘记单词.
+     *
+     * @param $words_id
+     * @return mixed
+     */
+    public function forgetReciteWord($words_id)
+    {
+        global $wpdb;
+        return $wpdb->update(
+            Wordstrike::$table_prefix."recite",
+            array('update_time' => time()),
+            array('words_id' => $words_id, 'uid' => $this->uid),
+            array('%d'),
+            array('%d', '%d')
+        );
+    }
 }
 
 function randOneWord()
@@ -136,4 +191,16 @@ function getOneReviewWord()
 {
     $study = new study;
     return $study->getOneReviewWord();
+}
+
+function upgradeReciteWord($words_id)
+{
+    $study = new study;
+    return $study->upgradeReciteWord($words_id);
+}
+
+function forgetReciteWord($words_id)
+{
+    $study = new study;
+    return $study->forgetReciteWord($words_id);
 }

@@ -93,6 +93,43 @@ class wordsBooks
             );
         }
     }
+
+    public function addWordsBook($book_id)
+    {
+        global $wpdb;
+        $ob_words = new words;
+        $p = @fopen("/Users/chenglinz/index/WordStrike/wp-content/themes/wordStrike/books/book.txt", "r");
+        if ($p) {
+            $words = array();
+            while (!feof($p)) {
+                $words[] = rtrim(fgets($p));
+            }
+            fclose($p);
+            if ($ob_words->addWords($words)) {
+                foreach ($words as $word) {
+                    $w = $ob_words->getWordByWordName($word);
+                    if ($w) {
+                        $wpdb->insert(
+                            Wordstrike::$table_prefix . 'words_books_words',
+                            array(
+                                'books_id' => $book_id,
+                                'words_id' => $w['id']
+                            ),
+                            array('%d', '%d')
+                        );
+                    }
+                }
+            }
+            return true;
+        } else {
+            return "打开文件失败";
+        }
+    }
+
+    public function isWordsBooksWord()
+    {
+        //todo
+    }
 }
 
 function getWordsBooks()
@@ -117,4 +154,10 @@ function addMyWordsBook($uid, $bookId)
 {
     $wordsBooks = new wordsBooks;
     return $wordsBooks->addMyWordsBook($uid, $bookId);
+}
+
+function addWordsBook()
+{
+    $wordsBooks = new wordsBooks;
+    return $wordsBooks->addWordsBook(1);
 }
