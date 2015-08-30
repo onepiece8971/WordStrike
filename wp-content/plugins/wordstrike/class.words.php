@@ -69,7 +69,10 @@ class words
                     $word = json_decode($word, true);
                     $word = $word['data'];
                     if (!empty($word)) {
-                        $this->insertOneWord($word['word_name'], $word['phonetic'], $word['means']);
+                        $flag = $this->insertOneWord($word['word_name'], $word['phonetic'], $word['means']);
+                        if (!$flag) {
+                            return $flag;
+                        }
                     }
                 }
             }

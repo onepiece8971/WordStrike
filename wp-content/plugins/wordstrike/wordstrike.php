@@ -33,7 +33,7 @@ function display_function(){
 add_action('admin_menu', 'add_menu_function');
 
 //自动加载apps
-define('theme_apps', WORDSTRIKE_DIR.'apps');
+define('workstrike_apps', WORDSTRIKE_DIR.'apps');
 function IncludeApps($dir){
     $dir = realpath($dir);
     if ($dir) {
@@ -48,4 +48,4 @@ function IncludeApps($dir){
         }//end foreach
     }//end if
 }
-IncludeApps( theme_apps );
+IncludeApps( workstrike_apps );

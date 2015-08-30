@@ -1,6 +1,7 @@
 <?php
 class wordsBooks
 {
+    private static $n = 10;
     /**
      * 获取数据库里的生词本.
      *
@@ -118,20 +119,20 @@ class wordsBooks
             //分段执行.
             $count = count($words);
             if ($i >= $count) {
-                return 0;
+                return array('flag'=> 2, 'i' => $i, 'percent' => 100);
             }
-            $ei = $i + 100;
+            $ei = $i + self::$n;
             if ($ei >= $count) {
                 $words = array_slice($words, $i);
             } else {
-                $words = array_slice($words, $i, 100);
+                $words = array_slice($words, $i, self::$n);
             }
 
             if ($ob_words->addWords($words)) {
                 foreach ($words as $word) {
                     $w = $ob_words->getWordByWordName($word);
                     if ($w && !in_array($w['id'], $words_ids)) {
-                        $wpdb->insert(
+                        $is_success = $wpdb->insert(
                             Wordstrike::$table_prefix . 'words_books_words',
                             array(
                                 'books_id' => $book_id,
@@ -139,10 +140,15 @@ class wordsBooks
                             ),
                             array('%d', '%d')
                         );
+                        if (!$is_success) {
+                            return array('flag'=> 0, 'i' => $i, 'percent' => 0);
+                        }
                     }
                 }
+            } else {
+                return array('flag'=> 0, 'i' => $i, 'percent' => 0);
             }
-            return $ei;
+            return array('flag'=> 1, 'i' => $ei, 'percent' => count($words) / $count * 100);
         } else {
             return "打开文件失败";
         }

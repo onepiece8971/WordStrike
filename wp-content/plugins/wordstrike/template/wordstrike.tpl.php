@@ -6,14 +6,11 @@
         <div style="transition-duration: 300ms; width: 0%;" class="bar">
             <div class="progress">0%</div>
         </div>
-        <div class="label">Uploading Files</div>
+        <div class="label">上传生词本</div>
     </div>
-    <div class="ignored">
-        <div class="ui icon buttons">
-            <div class="decrement ui basic red button"><i class="minus icon"></i></div>
-            <div class="add ui basic green button"><i class="plus icon"></i></div>
-        </div>
-    </div>
+    <button class="ui compact icon button green toggle add">
+        <i class="icon plus"></i>
+    </button>
     <input id="ei" type="hidden" value="0" />
 </div>
 <script>
@@ -32,26 +29,31 @@
                     handler.url,
                     {_ajax_nonce:  handler.nonce, action: 'add_words_book', i: i},
                     function(result){
-                        $ei.val(result);
+                        var result = JSON.parse(result);
+                        $ei.val(result.i);
                         console.log(result);
-                        if (result != 0) {
+                        if (result.flag == 1) {
                             if ($progress.hasClass('success')) {
                                 $progress.progress('reset');
                             }
-                            $progress.progress('increment', 10);
+                            $progress.progress('increment', result.percent);
                             handler.add();
+                        } else if (result.flag == 2) {
+                            $progress.progress('increment', result.percent);
+                            $ei.val(0);
+                            $add.removeClass('disabled');
                         } else {
-                            if ($progress.hasClass('success')) {
-                                $ei.val(0);
-                            } else {
-                                $progress.addClass('warning');
-                            }
+                            $progress.addClass('warning');
+                            $add.removeClass('disabled');
                         }
-//                        console.log(result);
                     }
                 );
             }
         };
+        $add.on('click', function(){
+            $progress.addClass('active');
+            $add.addClass('disabled');
+        });
         $add.on('click', handler.add);
     };
     $(document).ready(semantic.ready);

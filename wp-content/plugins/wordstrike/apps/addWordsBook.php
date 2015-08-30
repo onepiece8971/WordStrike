@@ -5,8 +5,9 @@ function add_words_book()
         echo 'You targeted the right function, but sorry, your nonce did not verify.';
         die();
     } else {
-        echo addWordsBook(1, (int)$_POST['i']);
-//        echo (int)$_POST['i'];
+        $arr = addWordsBook(1, (int)$_POST['i']);
+        echo json_encode($arr);
+        die();
     }
 }
 
