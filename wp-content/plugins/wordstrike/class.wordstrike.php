@@ -132,4 +132,17 @@ def;
         }
         return $new_array;
     }
+
+    /**
+     * 取得正则匹配的内容
+     *
+     * @param $str
+     * @param $pattern
+     * @return mixed
+     */
+    public static function trim_preg($str, $pattern)
+    {
+        preg_match($pattern, $str, $matches);
+        return $matches[0];
+    }
 }

@@ -98,9 +98,10 @@ class wordsBooks
      * 导入生词本.
      *
      * @param $book_id
+     * @param $i
      * @return bool|string
      */
-    public function addWordsBook($book_id)
+    public function addWordsBook($book_id, $i = 0)
     {
         set_time_limit(0);
         global $wpdb;
@@ -110,9 +111,22 @@ class wordsBooks
             $words_ids = $this->getWordsIdsByBooksId($book_id);
             $words = array();
             while (!feof($p)) {
-                $words[] = rtrim(fgets($p));
+                $words[] = Wordstrike::trim_preg(fgets($p), '/^[a-zA-Z.]*/');
             }
             fclose($p);
+
+            //分段执行.
+            $count = count($words);
+            if ($i >= $count) {
+                return 0;
+            }
+            $ei = $i + 100;
+            if ($ei >= $count) {
+                $words = array_slice($words, $i);
+            } else {
+                $words = array_slice($words, $i, 100);
+            }
+
             if ($ob_words->addWords($words)) {
                 foreach ($words as $word) {
                     $w = $ob_words->getWordByWordName($word);
@@ -128,10 +142,15 @@ class wordsBooks
                     }
                 }
             }
-            return true;
+            return $ei;
         } else {
             return "打开文件失败";
         }
+    }
+
+    public function addWordsBookWithOutWifi($book_id)
+    {
+        //todo 加入不用api直接根据文档内容导入的功能
     }
 
     /**
@@ -173,8 +192,8 @@ function addMyWordsBook($uid, $bookId)
     return $wordsBooks->addMyWordsBook($uid, $bookId);
 }
 
-function addWordsBook()
+function addWordsBook($book_id = 1, $i)
 {
     $wordsBooks = new wordsBooks;
-    return $wordsBooks->addWordsBook(1);
+    return $wordsBooks->addWordsBook($book_id, $i);
 }

@@ -54,7 +54,7 @@ class words
     }
 
     /**
-     * p批量添加单词
+     * 批量添加单词
      *
      * @param $words
      * @return bool

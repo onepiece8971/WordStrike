@@ -17,3 +17,15 @@ function IncludeAll($dir){
 }
 
 IncludeAll( theme_apps );
+
+/**
+ * WordPress 后台禁用Google Open Sans字体，加速网站
+ * http://www.wpdaxue.com/disable-google-fonts.html
+ */
+add_filter( 'gettext_with_context', 'wpdx_disable_open_sans', 888, 4 );
+function wpdx_disable_open_sans( $translations, $text, $context ) {
+    if ( 'Open Sans font: on or off' == $context && 'on' == $text ) {
+        $translations = 'off';
+    }
+    return $translations;
+}
