@@ -1,6 +1,7 @@
 <?php
 class words
 {
+    public static $error_words = array();
     /**
      * 通过word_name判断word是否存在
      * (不管是否激活)
@@ -71,7 +72,7 @@ class words
                     if (!empty($word)) {
                         $flag = $this->insertOneWord($word['word_name'], $word['phonetic'], $word['means']);
                         if (!$flag) {
-                            return $flag;
+                            array_push(self::$error_words, $word);
                         }
                     }
                 }

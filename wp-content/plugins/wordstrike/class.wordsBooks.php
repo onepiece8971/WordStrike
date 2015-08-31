@@ -96,61 +96,82 @@ class wordsBooks
     }
 
     /**
-     * 导入生词本.
+     * 获取文本中得单词.
      *
-     * @param $book_id
-     * @param $i
-     * @return bool|string
+     * @return array|bool
      */
-    public function addWordsBook($book_id, $i = 0)
+    public function getAddWords()
     {
-        set_time_limit(0);
-        global $wpdb;
-        $ob_words = new words;
-        $p = @fopen("/Users/chenglinz/index/WordStrike/wp-content/themes/wordStrike/books/book.txt", "r");
+        $p = @fopen(TEMPLATEPATH."/books/book.txt", "r");
         if ($p) {
-            $words_ids = $this->getWordsIdsByBooksId($book_id);
             $words = array();
             while (!feof($p)) {
                 $words[] = Wordstrike::trim_preg(fgets($p), '/^[a-zA-Z.]*/');
             }
             fclose($p);
-
-            //分段执行.
-            $count = count($words);
-            if ($i >= $count) {
-                return array('flag'=> 2, 'i' => $i, 'percent' => 100);
-            }
-            $ei = $i + self::$n;
-            if ($ei >= $count) {
-                $words = array_slice($words, $i);
-            } else {
-                $words = array_slice($words, $i, self::$n);
-            }
-
-            if ($ob_words->addWords($words)) {
-                foreach ($words as $word) {
-                    $w = $ob_words->getWordByWordName($word);
-                    if ($w && !in_array($w['id'], $words_ids)) {
-                        $is_success = $wpdb->insert(
-                            Wordstrike::$table_prefix . 'words_books_words',
-                            array(
-                                'books_id' => $book_id,
-                                'words_id' => $w['id']
-                            ),
-                            array('%d', '%d')
-                        );
-                        if (!$is_success) {
-                            return array('flag'=> 0, 'i' => $i, 'percent' => 0);
-                        }
-                    }
-                }
-            } else {
-                return array('flag'=> 0, 'i' => $i, 'percent' => 0);
-            }
-            return array('flag'=> 1, 'i' => $ei, 'percent' => count($words) / $count * 100);
+            return $words;
         } else {
-            return "打开文件失败";
+            return false;
+        }
+    }
+
+    /**
+     * 分步导入生词本.
+     *
+     * @param $book_id
+     * @param int $i
+     * @return array
+     */
+    public function ImportWordsBookForSteps($book_id, $i = 0)
+    {
+        $words = $this->getAddWords();
+        if (!$words) {
+            return array('flag'=> 0, 'i' => $i, 'percent' => 0);
+        }
+        set_time_limit(0);
+        $count = count($words);
+        if ($i >= $count) {
+            return array('flag'=> 2, 'i' => $i, 'percent' => 100);
+        }
+        $ei = $i + self::$n;
+        if ($ei >= $count) {
+            $words = array_slice($words, $i);
+        } else {
+            $words = array_slice($words, $i, self::$n);
+        }
+        try {
+            $this->addWordsToWordsBook($book_id, $words);
+        } catch (Exception $e) {
+            return array('flag'=> 0, 'i' => $i, 'percent' => 0);
+        }
+        return array('flag'=> 1, 'i' => $ei, 'percent' => count($words) / $count * 100);
+    }
+
+    /**
+     * 添加单词到生词本.
+     *
+     * @param $book_id
+     * @param $words
+     */
+    public function addWordsToWordsBook($book_id, $words)
+    {
+        global $wpdb;
+        $ob_words = new words;
+        if ($ob_words->addWords($words)) {
+            $words_ids = $this->getWordsIdsByBooksId($book_id);
+            foreach ($words as $word) {
+                $w = $ob_words->getWordByWordName($word);
+                if ($w && !in_array($w['id'], $words_ids)) {
+                    $wpdb->insert(
+                        Wordstrike::$table_prefix . 'words_books_words',
+                        array(
+                            'books_id' => $book_id,
+                            'words_id' => $w['id']
+                        ),
+                        array('%d', '%d')
+                    );
+                }
+            }
         }
     }
 
@@ -201,5 +222,5 @@ function addMyWordsBook($uid, $bookId)
 function addWordsBook($book_id = 1, $i)
 {
     $wordsBooks = new wordsBooks;
-    return $wordsBooks->addWordsBook($book_id, $i);
+    return $wordsBooks->ImportWordsBookForSteps($book_id, $i);
 }
