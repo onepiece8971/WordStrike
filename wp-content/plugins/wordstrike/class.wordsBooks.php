@@ -36,6 +36,7 @@ class wordsBooks
      *
      * @param $uid
      * @param $bookId
+     * @param int $act
      * @return bool
      */
     public function isMyWordsBook($uid,  $bookId, $act = 1)
@@ -96,7 +97,7 @@ class wordsBooks
     }
 
     /**
-     * 获取文本中得单词.
+     * 获取文本中的单词.
      *
      * @return array|bool
      */
@@ -122,7 +123,7 @@ class wordsBooks
      * @param int $i
      * @return array
      */
-    public function ImportWordsBookForSteps($book_id, $i = 0)
+    public function importWordsBookForSteps($book_id, $i = 0)
     {
         $words = $this->getAddWords();
         if (!$words) {
@@ -175,11 +176,6 @@ class wordsBooks
         }
     }
 
-    public function addWordsBookWithOutWifi($book_id)
-    {
-        //todo 加入不用api直接根据文档内容导入的功能
-    }
-
     /**
      * 通过books_id获取该生词本所有words_id.
      *
@@ -192,6 +188,53 @@ class wordsBooks
         $query = "SELECT words_id FROM ".Wordstrike::$table_prefix."words_books_words WHERE books_id = ".$books_id;
         $words_ids = $wpdb->get_results($query, ARRAY_A);
         return Wordstrike::getArrayValues($words_ids, 'words_id');
+    }
+
+    /**
+     * 添加空生词本.
+     *
+     * @param $name
+     * @param $content
+     * @param $img_url
+     * @return bool
+     */
+    public function addWordsBook($name, $content, $img_url)
+    {
+        global $wpdb;
+        if ($this->isHaveWordsBook($name)) {
+            return $wpdb->insert(
+                Wordstrike::$table_prefix."words_books",
+                array('name' => $name, 'content' => $content, 'img_url' => $img_url, 'create_time' => time()),
+                array('%s', '%s', '%s', '%d')
+            );
+        } else {
+            if (empty($img_url)) {
+                $up = array('content' => $content, 'create_time' => time(), 'act' => 1);
+            } else {
+                $up = array('content' => $content, 'img_url' => $img_url, 'create_time' => time(), 'act' => 1);
+            }
+            return $wpdb->update(
+                Wordstrike::$table_prefix."words_books",
+                $up,
+                array('name' => $name),
+                array('%s', '%s', '%s', '%d', '%d'),
+                array('%s')
+            );
+        }
+    }
+
+    /**
+     * 是否已经存在该生词本
+     *
+     * @param $name
+     * @return bool
+     */
+    public function isHaveWordsBook($name)
+    {
+        global $wpdb;
+        $query = "SELECT * FROM ".Wordstrike::$table_prefix."words_books where name = '".$name."'";
+        $row = $wpdb->get_row($query);
+        return empty($row);
     }
 }
 
@@ -219,8 +262,14 @@ function addMyWordsBook($uid, $bookId)
     return $wordsBooks->addMyWordsBook($uid, $bookId);
 }
 
-function addWordsBook($book_id = 1, $i)
+function importWordsBookForSteps($book_id = 1, $i)
 {
     $wordsBooks = new wordsBooks;
-    return $wordsBooks->ImportWordsBookForSteps($book_id, $i);
+    return $wordsBooks->importWordsBookForSteps($book_id, $i);
+}
+
+function addWordsBook($name, $content, $img_url)
+{
+    $wordsBooks = new wordsBooks;
+    return $wordsBooks->addWordsBook($name, $content, $img_url);
 }

@@ -39,3 +39,9 @@ div.ui.container a.fluid.ui.button {
 #play:hover {
   background-color: #21ba45;
 }
+
+/* line 38, ../../../../compass/sass/style.scss */
+.admin.ui.button {
+  margin-top: 5px;
+  line-height: 5px;
+}
