@@ -3,7 +3,7 @@
 <body>
 <h1 class="ui center aligned header">添加生词本</h1>
 <div class="ui text container">
-    <form class="ui form">
+    <form id="form-addWordsBook" class="ui form">
         <div class="two fields">
             <div class="field">
                 <label>单词本名字</label>
@@ -22,7 +22,20 @@
     </form>
 </div>
 <h1 class="ui center aligned header">上传生词本</h1>
+<?php $wordsBooks = getAllWordsBooks() ?>
 <div class="ui text container">
+    <form class="ui form">
+        <div class="two fields">
+            <div class="field">
+                <label>State</label>
+                <select class="ui fluid dropdown" name="books_id">
+                    <?php foreach ($wordsBooks as $wordsBook) : ?>
+                    <option value="<?php echo $wordsBook['id']; ?>"><?php echo $wordsBook['name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </form>
     <div data-percent="0" class="ui progress">
         <div style="transition-duration: 300ms; width: 0%;" class="bar">
             <div class="progress">0%</div>
@@ -63,14 +76,15 @@
             nonce : "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
             url : "<?php echo admin_url('admin-ajax.php'); ?>",
             add: function(){
-                var i = $ei.val();
+                var i = $ei.val(),
+                      books_id = $('select[name=books_id]').val();
                 $.post(
                     handler.url,
-                    {_ajax_nonce:  handler.nonce, action: 'import_words_book', i: i},
+                    {_ajax_nonce:  handler.nonce, action: 'import_words_book', books_id: books_id, i: i},
                     function(result){
                         var result = JSON.parse(result);
                         $ei.val(result.i);
-                        console.log(result);
+//                        console.log(result);
                         if (result.flag == 1) {
                             if ($progress.hasClass('success')) {
                                 $progress.progress('reset');
@@ -89,7 +103,7 @@
                 );
             },
             addWordsBook: function(){
-                var form = $("form").serializeObject();
+                var form = $("#form-addWordsBook").serializeObject();
                 $.post(
                     handler.url,
                     {_ajax_nonce:  handler.nonce, action: 'add_words_book',

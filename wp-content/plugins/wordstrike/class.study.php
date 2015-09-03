@@ -120,6 +120,21 @@ class study
     }
 
     /**
+     * 获取一个大于开始时间的复习生词.
+     *
+     * @param $begin
+     * @return mixed
+     */
+    public function getOneReviewWordAfterBegin($begin)
+    {
+        global $wpdb;
+        $now = time();
+        $query = "SELECT words_id FROM ".Wordstrike::$table_prefix."recite WHERE uid = ".$this->uid." AND ".$now." - update_time >= level_time AND create_time > ".$begin." AND act = 1 order by update_time LIMIT 1";
+        $words_id = $wpdb->get_var($query);
+        return $this->getWordById($words_id);
+    }
+
+    /**
      * 获取当前用户的一个单词等级
      *
      * @param $words_id
@@ -203,4 +218,10 @@ function forgetReciteWord($words_id)
 {
     $study = new study;
     return $study->forgetReciteWord($words_id);
+}
+
+function getOneReviewWordAfterBegin($begin)
+{
+    $study = new study;
+    return $study->getOneReviewWordAfterBegin($begin);
 }

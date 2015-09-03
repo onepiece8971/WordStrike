@@ -57,12 +57,13 @@
     // ready event
     semantic.ready = function () {
         // selector cache
-        var $toggle = $('.ui.toggle.button');
+        var $toggle = $('.ui.toggle.button'),
+              $a = $('a');
 
         handler = {
             nonce : "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
             url : "<?php echo admin_url('admin-ajax.php'); ?>",
-            activate: function() {
+            activate: function(){
                 var uid = $(this).attr('uid'),
                     books_id = $(this).attr('books_id');
                 if ($(this).hasClass('red')) {
@@ -76,13 +77,19 @@
                 } else {
                     $.post(
                         handler.url,
-                        {_ajax_nonce:  handler.nonce, action: 'add_my_words_book', uid: uid, books_id: books_id},
-                        function(result){
-                            console.log(result);
-                        }
+                        {_ajax_nonce:  handler.nonce, action: 'add_my_words_book', uid: uid, books_id: books_id}
                     );
                 }
 //                console.log($(this).hasClass('red'));
+            },
+            addSession: function(){
+                $.post(
+                    handler.url,
+                    {_ajax_nonce:  handler.nonce, action: 'add_session'},
+                    function(result){
+                        console.log(result);
+                    }
+                );
             }
         };
         $toggle.on('click', handler.activate);
@@ -95,6 +102,7 @@
                 active: 'red'
             }
         });
+        $a.on('click', handler.addSession);
     };
     // attach ready event
     $(document).ready(semantic.ready);

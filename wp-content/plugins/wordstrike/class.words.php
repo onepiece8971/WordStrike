@@ -11,7 +11,7 @@ class words
      * @param $word_name
      * @return bool
      */
-    public function isWordByWordName($word_name)
+    public function isEmptyWordName($word_name)
     {
         global $wpdb;
         $query_one = "SELECT * FROM ".Wordstrike::$table_prefix."words WHERE word_name = '".$word_name."'";
@@ -66,7 +66,7 @@ class words
     {
         if ($words) {
             foreach ($words as $word_name) {
-                if ($this->isWordByWordName($word_name)) {
+                if ($this->isEmptyWordName($word_name)) {
                     $word = $this->getWordByWordsNameFromFile($word_name);
                     if (!empty($word)) {
                         $flag = $this->insertOneWord($word['word_name'], $word['phonetic'], $word['means']);

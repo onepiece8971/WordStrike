@@ -137,12 +137,11 @@ def;
      * 取得正则匹配的内容
      *
      * @param $str
-     * @param $pattern
      * @return mixed
      */
-    public static function trim_preg($str, $pattern)
+    public static function trim_word($str)
     {
-        preg_match($pattern, $str, $matches);
+        preg_match('/^[a-zA-Z.]*/', $str, $matches);
         return $matches[0];
     }
 }

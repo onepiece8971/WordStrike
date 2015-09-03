@@ -107,7 +107,10 @@ class wordsBooks
         if ($p) {
             $words = array();
             while (!feof($p)) {
-                $words[] = Wordstrike::trim_preg(fgets($p), '/^[a-zA-Z.]*/');
+                $word = Wordstrike::trim_word(fgets($p));
+                if ($word) {
+                    array_push($words, $word);
+                }
             }
             fclose($p);
             return $words;
@@ -201,7 +204,7 @@ class wordsBooks
     public function addWordsBook($name, $content, $img_url)
     {
         global $wpdb;
-        if ($this->isHaveWordsBook($name)) {
+        if ($this->isEmptyWordsBook($name)) {
             return $wpdb->insert(
                 Wordstrike::$table_prefix."words_books",
                 array('name' => $name, 'content' => $content, 'img_url' => $img_url, 'create_time' => time()),
@@ -229,12 +232,24 @@ class wordsBooks
      * @param $name
      * @return bool
      */
-    public function isHaveWordsBook($name)
+    public function isEmptyWordsBook($name)
     {
         global $wpdb;
         $query = "SELECT * FROM ".Wordstrike::$table_prefix."words_books where name = '".$name."'";
         $row = $wpdb->get_row($query);
         return empty($row);
+    }
+
+    /**
+     * 获取全部生词本.
+     *
+     * @return mixed
+     */
+    public function getAllWordsBooks()
+    {
+        global $wpdb;
+        $query = "SELECT id, name FROM ".Wordstrike::$table_prefix."words_books where act = 1";
+        return $wpdb->get_results($query, ARRAY_A);
     }
 }
 
@@ -262,7 +277,7 @@ function addMyWordsBook($uid, $bookId)
     return $wordsBooks->addMyWordsBook($uid, $bookId);
 }
 
-function importWordsBookForSteps($book_id = 1, $i)
+function importWordsBookForSteps($book_id, $i)
 {
     $wordsBooks = new wordsBooks;
     return $wordsBooks->importWordsBookForSteps($book_id, $i);
@@ -272,4 +287,10 @@ function addWordsBook($name, $content, $img_url)
 {
     $wordsBooks = new wordsBooks;
     return $wordsBooks->addWordsBook($name, $content, $img_url);
+}
+
+function getAllWordsBooks()
+{
+    $wordsBooks = new wordsBooks;
+    return $wordsBooks->getAllWordsBooks();
 }

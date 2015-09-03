@@ -5,7 +5,7 @@ function import_words_book()
         echo 'You targeted the right function, but sorry, your nonce did not verify.';
         die();
     } else {
-        $arr = importWordsBookForSteps(1, (int)$_POST['i']);
+        $arr = importWordsBookForSteps((int)$_POST['books_id'], (int)$_POST['i']);
         echo json_encode($arr);
         die();
     }
