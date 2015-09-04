@@ -89,10 +89,10 @@
                             if ($progress.hasClass('success')) {
                                 $progress.progress('reset');
                             }
-                            $progress.progress('increment', result.percent);
+                            $progress.progress({percent: result.percent});
                             handler.add();
                         } else if (result.flag == 2) {
-                            $progress.progress('increment', result.percent);
+                            $progress.progress({percent: result.percent});
                             $ei.val(0);
                             $add.removeClass('disabled');
                         } else {

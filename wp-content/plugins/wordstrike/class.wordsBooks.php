@@ -148,7 +148,7 @@ class wordsBooks
         } catch (Exception $e) {
             return array('flag'=> 0, 'i' => $i, 'percent' => 0);
         }
-        return array('flag'=> 1, 'i' => $ei, 'percent' => count($words) / $count * 100);
+        return array('flag'=> 1, 'i' => $ei, 'percent' => $i  / $count * 100);
     }
 
     /**
