@@ -33,8 +33,10 @@
                 <div class="ui segment"><span class="ui red header"><?php echo $key; ?>. </span><?php echo $one; ?></div>
             <?php endforeach; ?>
         </div>
-        <div class="ui button red upgrade" type="forget">忘记</div>
-        <div class="ui button green upgrade right floated" type="upgrade">记得</div>
+        <div  class="bottom-button">
+            <div class="ui button red upgrade" type="forget">忘记</div>
+            <div class="ui button green upgrade right" type="upgrade">记得</div>
+        </div>
     </div>
 <?php endif; ?>
 </body>
@@ -73,7 +75,11 @@
             $('audio')[0].play();
         }).mouseover(function(){
             $('audio')[0].play();
-        })
+        });
+
+        var width = $('.ui.text.container').width();
+        $('.bottom-button').width(width);
+        $('.bottom-button .button').width(width/2-50);
     };
     $(document).ready(semantic.ready);
 </script>

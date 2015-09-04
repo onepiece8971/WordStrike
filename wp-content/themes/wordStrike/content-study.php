@@ -41,8 +41,10 @@ $review = getOneReviewWordAfterBegin($begin);
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="ui button red add" level="0">熟词</div>
-            <div class="ui button green add right floated" level="1">加入生词本</div>
+            <div  class="bottom-button">
+                <div class="ui button red add" level="0">熟词</div>
+                <div class="ui button green add right" level="1">加入生词本</div>
+            </div>
         </div>
     <?php endif; ?>
 <?php else : ?>
@@ -68,8 +70,10 @@ $review = getOneReviewWordAfterBegin($begin);
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="ui button red upgrade" type="forget">忘记</div>
-        <div class="ui button green upgrade right floated" type="upgrade">记得</div>
+        <div  class="bottom-button">
+            <div class="ui button red upgrade" type="forget">忘记</div>
+            <div class="ui button green upgrade right" type="upgrade">记得</div>
+        </div>
     </div>
 <?php endif; ?>
 </body>
@@ -122,7 +126,11 @@ $review = getOneReviewWordAfterBegin($begin);
             $('audio')[0].play();
         }).mouseover(function(){
             $('audio')[0].play();
-        })
+        });
+
+        var width = $('.ui.text.container').width();
+        $('.bottom-button').width(width);
+        $('.bottom-button .button').width(width/2-50);
     };
     $(document).ready(semantic.ready);
 </script>

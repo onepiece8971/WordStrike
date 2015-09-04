@@ -39,3 +39,12 @@ div.ui.container {
   margin-top: 5px;
   line-height: 5px;
 }
+
+.bottom-button {
+  position: fixed;
+  bottom: 10px;
+  .right {
+    position: absolute;
+    right: 0;
+  }
+}
