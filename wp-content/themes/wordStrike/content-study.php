@@ -41,10 +41,8 @@ $review = getOneReviewWordAfterBegin($begin);
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="ui two bottom attached buttons">
-                <div class="ui button red add" level="0">熟词</div>
-                <div class="ui button green add" level="1">加入生词本</div>
-            </div>
+            <div class="ui button red add" level="0">熟词</div>
+            <div class="ui button green add right floated" level="1">加入生词本</div>
         </div>
     <?php endif; ?>
 <?php else : ?>
@@ -70,10 +68,8 @@ $review = getOneReviewWordAfterBegin($begin);
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="ui two bottom attached buttons">
-            <div class="ui button red upgrade" type="forget">忘记</div>
-            <div class="ui button green upgrade" type="upgrade">记得</div>
-        </div>
+        <div class="ui button red upgrade" type="forget">忘记</div>
+        <div class="ui button green upgrade right floated" type="upgrade">记得</div>
     </div>
 <?php endif; ?>
 </body>

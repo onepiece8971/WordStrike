@@ -33,10 +33,8 @@
                 <div class="ui segment"><span class="ui red header"><?php echo $key; ?>. </span><?php echo $one; ?></div>
             <?php endforeach; ?>
         </div>
-        <div class="ui two bottom attached buttons">
-            <div class="ui button red upgrade" type="forget">忘记</div>
-            <div class="ui button green upgrade" type="upgrade">记得</div>
-        </div>
+        <div class="ui button red upgrade" type="forget">忘记</div>
+        <div class="ui button green upgrade right floated" type="upgrade">记得</div>
     </div>
 <?php endif; ?>
 </body>
