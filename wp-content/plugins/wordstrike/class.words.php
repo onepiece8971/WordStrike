@@ -1,8 +1,6 @@
 <?php
 class words
 {
-    const URL = 'http://localhost/WordStrikeApi/Public/?q=';
-
     public static $error_words = array();
     /**
      * 通过word_name判断word是否存在
@@ -92,7 +90,7 @@ class words
      */
     public function getWordByWordsNameFromFile($word_name)
     {
-        $word = file_get_contents(self::URL.$word_name);
+        $word = file_get_contents(WORDSTRIKE_API.$word_name);
         $word = json_decode($word, true);
         return $word['data'];
     }
