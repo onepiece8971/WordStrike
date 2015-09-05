@@ -1,9 +1,9 @@
-@font-face {
+/*@font-face {
   font-family: 'Ksphonet';
-  src: url("../images/Ksphonet.ttf") format("truetype");
+  src: url($imagesUrl + 'Ksphonet.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-}
+}*/
 /* line 10, ../../../../compass/sass/style.scss */
 .masthead {
   height: 60%;
