@@ -1,9 +1,9 @@
-/*@font-face {
+@font-face {
   font-family: 'Ksphonet';
-  src: url($imagesUrl + 'Ksphonet.ttf') format('truetype');
+  src: url("../images/Ksphonet.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}*/
+}
 /* line 10, ../../../../compass/sass/style.scss */
 .masthead {
   height: 60%;
@@ -40,20 +40,21 @@ div.ui.container a.fluid.ui.button {
 /* line 38, ../../../../compass/sass/style.scss */
 #play {
   cursor: pointer;
+  font-family: 'Ksphonet';
 }
 
-/* line 42, ../../../../compass/sass/style.scss */
+/* line 43, ../../../../compass/sass/style.scss */
 .admin.ui.button {
   margin-top: 5px;
   line-height: 5px;
 }
 
-/* line 47, ../../../../compass/sass/style.scss */
+/* line 48, ../../../../compass/sass/style.scss */
 .bottom-button {
   position: fixed;
   bottom: 10px;
 }
-/* line 50, ../../../../compass/sass/style.scss */
+/* line 51, ../../../../compass/sass/style.scss */
 .bottom-button .right {
   position: absolute;
   right: 0;

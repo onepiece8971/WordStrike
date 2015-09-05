@@ -1,11 +1,11 @@
 $imagesUrl : "../images/";
 
-/*@font-face {
+@font-face {
   font-family: 'Ksphonet';
   src: url($imagesUrl + 'Ksphonet.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-}*/
+}
 
 .masthead {
   height: 60%;
@@ -37,6 +37,7 @@ div.ui.container {
 
 #play {
   cursor: pointer;
+  font-family: 'Ksphonet';
 }
 
 .admin.ui.button {
