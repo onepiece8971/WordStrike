@@ -15,7 +15,16 @@
 <?php else : ?>
     <div class="margin100px">
         <h1 class="ui center aligned header"><?php echo $word['word_name']; ?></h1>
-        <h4 class="ui center aligned header"><span id="play"><?php echo $word['phonetic']; ?></span></h4>
+        <h4 class="ui center aligned header">
+            <span id="play">
+                <?php if (empty($word['phonetic'])) : ?>
+                    <i class="play icon"></i>
+                <?php else :
+                echo $word['phonetic'];
+                endif;
+                ?>
+            </span>
+        </h4>
         <audio src=
                <?php if (empty($word['voice'])) : ?>
                "http://dict.youdao.com/dictvoice?audio=<?php echo $word['word_name']; ?>&type=2"
@@ -72,8 +81,6 @@
         $upgrade.on('click', handler.upgrade);
         $show.on('click', handler.show);
         $('#play').click(function(){
-            $('audio')[0].play();
-        }).mouseover(function(){
             $('audio')[0].play();
         });
 

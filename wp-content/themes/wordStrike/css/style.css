@@ -35,23 +35,19 @@ div.ui.container a.fluid.ui.button {
 #play {
   cursor: pointer;
 }
-/* line 33, ../../../../compass/sass/style.scss */
-#play:hover {
-  background-color: #21ba45;
-}
 
-/* line 38, ../../../../compass/sass/style.scss */
+/* line 35, ../../../../compass/sass/style.scss */
 .admin.ui.button {
   margin-top: 5px;
   line-height: 5px;
 }
 
-/* line 43, ../../../../compass/sass/style.scss */
+/* line 40, ../../../../compass/sass/style.scss */
 .bottom-button {
   position: fixed;
   bottom: 10px;
 }
-/* line 46, ../../../../compass/sass/style.scss */
+/* line 43, ../../../../compass/sass/style.scss */
 .bottom-button .right {
   position: absolute;
   right: 0;

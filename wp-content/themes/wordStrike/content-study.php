@@ -23,7 +23,16 @@ $review = getOneReviewWordAfterBegin($begin);
     <?php else : ?>
         <div class="margin100px">
             <h1 class="ui center aligned header"><?php echo $word['word_name']; ?></h1>
-            <h4 class="ui center aligned header"><span id="play"><?php echo $word['phonetic']; ?></span></h4>
+            <h4 class="ui center aligned header">
+            <span id="play">
+                <?php if (empty($word['phonetic'])) : ?>
+                    <i class="play icon"></i>
+                <?php else :
+                    echo $word['phonetic'];
+                endif;
+                ?>
+            </span>
+            </h4>
             <audio src=
                    <?php if (empty($word['voice'])) : ?>
                    "http://dict.youdao.com/dictvoice?audio=<?php echo $word['word_name']; ?>&type=2"
@@ -42,7 +51,7 @@ $review = getOneReviewWordAfterBegin($begin);
                 <?php endforeach; ?>
             </div>
             <div  class="bottom-button">
-                <div class="ui button red add" level="0">熟词</div>
+                <div class="ui button red add" level="9">熟词</div>
                 <div class="ui button green add right" level="1">加入生词本</div>
             </div>
         </div>
@@ -51,7 +60,16 @@ $review = getOneReviewWordAfterBegin($begin);
     <?php $word =  $review; ?>
     <div class="margin100px">
         <h1 class="ui center aligned header"><?php echo $word['word_name']; ?></h1>
-        <h4 class="ui center aligned header"><span id="play"><?php echo $word['phonetic']; ?></span></h4>
+        <h4 class="ui center aligned header">
+            <span id="play">
+                <?php if (empty($word['phonetic'])) : ?>
+                    <i class="play icon"></i>
+                <?php else :
+                    echo $word['phonetic'];
+                endif;
+                ?>
+            </span>
+        </h4>
         <audio src=
                <?php if (empty($word['voice'])) : ?>
                "http://dict.youdao.com/dictvoice?audio=<?php echo $word['word_name']; ?>&type=2"

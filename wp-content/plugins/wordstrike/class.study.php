@@ -5,7 +5,7 @@ class study
     private $uid;
 
     public static $level = array(
-        0 => 2592000,
+        0 => 60,
         1 => 300,
         2 => 1800,
         3 => 43200,
@@ -14,6 +14,7 @@ class study
         6 => 345600,
         7 => 604800,
         8 => 1296000,
+        9 => 2592000
     );
 
     public function __construct()
@@ -157,8 +158,8 @@ class study
     {
         global $wpdb;
         $level = $this->getLevelById($words_id); //获取单词当前等级
-        if (8 == $level || 0 == $level) {
-            $level = 0;
+        if (9 == $level) {
+            $level = 9;
         } else {
             ++$level;
         }
@@ -182,9 +183,9 @@ class study
         global $wpdb;
         return $wpdb->update(
             Wordstrike::$table_prefix."recite",
-            array('update_time' => time()),
+            array('update_time' => time(), 'level' => 0, 'level_time' => self::$level[0]),
             array('words_id' => $words_id, 'uid' => $this->uid),
-            array('%d'),
+            array('%d', '%d', '%d'),
             array('%d', '%d')
         );
     }

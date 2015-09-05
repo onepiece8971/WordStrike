@@ -1,5 +1,12 @@
 $imagesUrl : "../images/";
 
+@font-face {
+  font-family: 'WordHackerPhonetic';
+  src: url($imagesUrl + 'WordHackerPhonetic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .masthead {
   height: 60%;
   background-image: url($imagesUrl + "12.jpg");
@@ -30,9 +37,6 @@ div.ui.container {
 
 #play {
   cursor: pointer;
-  &:hover {
-    background-color: #21ba45;
-  }
 }
 
 .admin.ui.button {
