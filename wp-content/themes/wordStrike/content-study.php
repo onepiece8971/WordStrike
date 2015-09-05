@@ -142,14 +142,22 @@ $review = getOneReviewWordAfterBegin($begin);
         $show.on('click', handler.show);
         $('#play').click(function(){
             $('audio')[0].play();
-        }).mouseover(function(){
-            $('audio')[0].play();
         });
 
         var width = $('.ui.text.container').width();
         $('.bottom-button').width(width);
         $('.bottom-button .button').width(width/2-50);
     };
-    $(document).ready(semantic.ready);
+    $(document).ready(semantic.ready).keydown(function(event){
+        if (event.keyCode == 38){
+            $('audio')[0].play();
+        } else if (event.keyCode == 37) {
+            $('.bottom-button .button').click();
+        } else if (event.keyCode == 39) {
+            $('.bottom-button .button.right').click();
+        } else if (event.keyCode == 40) {
+            handler.show();
+        }
+    });
 </script>
 </html>

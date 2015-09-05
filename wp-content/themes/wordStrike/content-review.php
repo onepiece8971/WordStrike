@@ -54,6 +54,7 @@
     semantic = {};
     // ready event
     semantic.ready = function () {
+        $('audio')[0].play(); //自动发音
         var $upgrade = $('.upgrade'),
              $show = $('#show'),
             words_id = "<?php echo $word['id'] ?>";
@@ -88,6 +89,16 @@
         $('.bottom-button').width(width);
         $('.bottom-button .button').width(width/2-50);
     };
-    $(document).ready(semantic.ready);
+    $(document).ready(semantic.ready).keydown(function(event){
+        if (event.keyCode == 38){
+            $('audio')[0].play();
+        } else if (event.keyCode == 37) {
+            $('.bottom-button .button').click();
+        } else if (event.keyCode == 39) {
+            $('.bottom-button .button.right').click();
+        } else if (event.keyCode == 40) {
+            handler.show();
+        }
+    });
 </script>
 </html>
