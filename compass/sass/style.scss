@@ -1,8 +1,16 @@
 $imagesUrl : "../images/";
+$fontUrl : "../css/fonts/";
 
 @font-face {
   font-family: 'Ksphonet';
-  src: url($imagesUrl + 'Ksphonet.ttf') format('truetype');
+  src: url($fontUrl + 'Ksphonet.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'WordHackerPhonetic';
+  src: url($fontUrl + 'WordHackerPhonetic.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -37,7 +45,7 @@ div.ui.container {
 
 #play {
   cursor: pointer;
-  font-family: "Ksphonet", Helvetica, Arial, sans-serif ;
+  font-family: "Ksphonet", "WordHackerPhonetic", "lucida sans unicode", arial, sans-serif;
 }
 
 .admin.ui.button {
