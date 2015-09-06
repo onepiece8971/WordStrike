@@ -21,6 +21,7 @@ $review = getOneReviewWordAfterBegin($begin);
             <h1 class="ui center aligned header">该生词本已背完</h1>
         </div>
     <?php else : ?>
+        <span class="ui right floated header"><?php $yodayCount = getTodayReciteWordCount();  echo $yodayCount; ?>/20</span>
         <div class="margin100px">
             <h1 class="ui center aligned header"><?php echo $word['word_name']; ?></h1>
             <h4 class="ui center aligned header">
@@ -100,6 +101,10 @@ $review = getOneReviewWordAfterBegin($begin);
     semantic = {};
     // ready event
     semantic.ready = function () {
+        var yodayCount = <?php echo $yodayCount ?>;
+        if (yodayCount == 20) {
+            alert('今天已经背了20个单词!');
+        }
         var $add = $('.add'),
               $upgrade = $('.upgrade'),
               $show = $('#show'),

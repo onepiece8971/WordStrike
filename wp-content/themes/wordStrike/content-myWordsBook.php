@@ -8,6 +8,15 @@
 <body>
 <div class="masthead">
     <h1 class="ui center aligned header inverted middlebig"><span class="library">WordStrike</span></h1>
+    <div class="ui container text" style="margin-top: 10%">
+        <table class="ui celled table three column center aligned">
+            <tr>
+                <td>生词 <?php echo getNewWordsCount(); ?></td>
+                <td class="positive">熟词 <?php echo getNewWordsCount(false); ?></td>
+                <td class="negative">未学 <?php echo getUnstudiedCount(); ?></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <div class="ui container text">
     <?php

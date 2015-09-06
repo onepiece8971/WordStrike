@@ -189,6 +189,19 @@ class study
             array('%d', '%d')
         );
     }
+
+    /**
+     * 获取当前用户今天已背单词数.
+     *
+     * @return null|string
+     */
+    public function getTodayReciteWordCount()
+    {
+        global $wpdb;
+        $today = strtotime("today");
+        $query = "SELECT count(1) FROM ".Wordstrike::$table_prefix."recite WHERE uid = ".$this->uid."  AND create_time >= ".$today." AND act = 1";
+        return $wpdb->get_var($query);
+    }
 }
 
 function randOneWord()
@@ -225,4 +238,10 @@ function getOneReviewWordAfterBegin($begin)
 {
     $study = new study;
     return $study->getOneReviewWordAfterBegin($begin);
+}
+
+function getTodayReciteWordCount()
+{
+    $study = new study;
+    return $study->getTodayReciteWordCount();
 }
