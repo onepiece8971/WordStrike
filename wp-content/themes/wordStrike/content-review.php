@@ -43,8 +43,8 @@
             <?php endforeach; ?>
         </div>
         <div  class="bottom-button">
-            <div class="ui button red upgrade" type="forget">忘记</div>
-            <div class="ui button green upgrade right" type="upgrade">记得</div>
+            <div class="ui button green upgrade left" type="upgrade">记得</div>
+            <div class="ui button red upgrade right" type="forget">忘记</div>
         </div>
     </div>
 <?php endif; ?>
@@ -93,7 +93,7 @@
         if (event.keyCode == 38){
             $('audio')[0].play();
         } else if (event.keyCode == 37) {
-            $('.bottom-button .button').click();
+            $('.bottom-button .button.left').click();
         } else if (event.keyCode == 39) {
             $('.bottom-button .button.right').click();
         } else if (event.keyCode == 40) {
