@@ -5,6 +5,7 @@ class study
     private $uid;
 
     public static $level = array(
+        -1 => 30,
         0 => 60,
         1 => 300,
         2 => 1800,
@@ -145,7 +146,7 @@ class study
     {
         global $wpdb;
         $query = "SELECT `level` FROM ".Wordstrike::$table_prefix."recite WHERE words_id = ".$words_id." AND uid = ".$this->uid." AND act = 1";
-        return $wpdb->get_var($query);
+        return (int)$wpdb->get_var($query);
     }
 
     /**
@@ -181,9 +182,11 @@ class study
     public function forgetReciteWord($words_id)
     {
         global $wpdb;
+        $level = $this->getLevelById($words_id);
+        $level = 0 === $level ? -1 : 0;
         return $wpdb->update(
             Wordstrike::$table_prefix."recite",
-            array('update_time' => time(), 'level' => 0, 'level_time' => self::$level[0]),
+            array('update_time' => time(), 'level' => $level, 'level_time' => self::$level[$level]),
             array('words_id' => $words_id, 'uid' => $this->uid),
             array('%d', '%d', '%d'),
             array('%d', '%d')
