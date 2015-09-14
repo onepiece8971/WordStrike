@@ -5,7 +5,7 @@ require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
 /**
  * Wordstrike插件主类.
  */
-class Wordstrike
+class WordstrikeBack
 {
     /**
      * 数据库表前缀.

@@ -5,7 +5,7 @@
  * PHP version 5.3
  *
  * @category  Study
- * @package   Wordstrike
+ * @package   WordStrike
  * @author    chenglinz <onepiece8971@163.com>
  * @copyright 2015-2016 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/onepiece8971/WordStrike/licence.txt BSD Licence
@@ -16,7 +16,7 @@
  * Class Study
  *
  * @category Study
- * @package  Wordstrike
+ * @package  WordStrike
  * @author   chenglinz <onepiece8971@163.com>
  * @license  https://github.com/onepiece8971/WordStrike/licence.txt BSD Licence
  * @link     https://github.com/onepiece8971/WordStrike
