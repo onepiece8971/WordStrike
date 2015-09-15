@@ -1,10 +1,10 @@
 <?php
 /**
- * BaseModel
+ * WordStrike基础类
  *
  * PHP version 5.3
  *
- * @category  BaseModel
+ * @category  Base
  * @package   WordStrike
  * @author    chenglinz <onepiece8971@163.com>
  * @copyright 2015-2016 Squiz Pty Ltd (ABN 77 084 670 600)
@@ -13,15 +13,15 @@
  */
 
 /**
- * Class BaseModel
+ * Class Base
  *
- * @category BaseModel
+ * @category Base
  * @package  WordStrike
  * @author   chenglinz <onepiece8971@163.com>
  * @license  https://github.com/onepiece8971/WordStrike/licence.txt BSD Licence
  * @link     https://github.com/onepiece8971/WordStrike
  */
-class BaseModel
+class Base
 {
 
     /**
@@ -30,51 +30,6 @@ class BaseModel
      * @var array
      */
     protected static $instances = array();
-
-    /**
-     * wordStrike表前缀
-     *
-     * @var
-     */
-    protected $tablePrefix;
-
-    /**
-     * 用户id
-     *
-     * @var int
-     */
-    protected $uid;
-
-    /**
-     * wordpress db class
-     *
-     * @var
-     */
-    protected $wpDb;
-
-
-    /**
-     * 构造函数
-     */
-    public function __construct()
-    {
-        // 获取当前用户id.
-        if (empty($this->uid) === true) {
-            $currentUser = wp_get_current_user();
-            $this->uid   = $currentUser->ID;
-        }
-
-        // 获取表前缀.
-        if (empty($this->tablePrefix) === true) {
-            $this->tablePrefix = WordStrikeModel::getTablePrefix();
-        }
-
-        // 获取wordpress db class.
-        if (empty($this->$wpDb) === true) {
-            $this->$wpDb = $GLOBALS['wpdb'];
-        }
-
-    }//end __construct()
 
 
     /**

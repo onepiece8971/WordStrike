@@ -1,6 +1,6 @@
 <?php
 /**
- * Parses and verifies the doc comments for classes.
+ * 学习相关
  *
  * PHP version 5.3
  *
@@ -21,47 +21,20 @@
  * @license  https://github.com/onepiece8971/WordStrike/licence.txt BSD Licence
  * @link     https://github.com/onepiece8971/WordStrike
  */
-class Study
+class Study extends Base
 {
 
+
     /**
-     * 用户id
+     * 实例化类
      *
-     * @var int
+     * @return object
      */
-    private $_uid;
-
-    /**
-     * 单词等级
-     *
-     * @var array
-     */
-    public static $level = array(
-                            -1 => 30,
-                            0  => 60,
-                            1  => 300,
-                            2  => 1800,
-                            3  => 43200,
-                            4  => 86400,
-                            5  => 172800,
-                            6  => 345600,
-                            7  => 604800,
-                            8  => 1296000,
-                            9  => 2592000,
-                           );
-
-
-    /**
-     * 构造函数
-     */
-    public function __construct()
+    public static function init()
     {
-        if (empty($this->uid) === true) {
-            $currentUser = wp_get_current_user();
-            $this->_uid  = $currentUser->ID;
-        }
+        parent::instance(__CLASS__);
 
-    }//end __construct()
+    }//end init()
 
 
     /**
@@ -78,17 +51,19 @@ class Study
         }
 
         $wpdb = $GLOBALS['wpdb'];
-        // 取出背词表的所有words_ids, 并拼接为字符串.
-        $queryRecite = 'SELECT words_id FROM ' . Wordstrike::$table_prefix .'recite WHERE uid = ' . $this->uid . ' AND act != 0';
-        $wordsIds    = $wpdb->get_results($queryRecite, ARRAY_A);
-        $wordsIds    = Wordstrike::getArrayValues($wordsIds, 'words_id');
-        $count       = count($wordsIds);
-        $wordsIds    = implode(', ', $wordsIds);
+        // 取出背词表的所有wordsIds, 并拼接为字符串.
+        $wordsIds = ReciteModel::init()->getCurrentUserReciteWordIds();
+        $wordsIds = Utility::getArrayValues($wordsIds, 'words_id');
+        $count    = count($wordsIds);
+        $wordsIds = implode(', ', $wordsIds);
         // 没有已背单词.
         if ($count === 0) {
-            $queryWordsId = 'SELECT words_id FROM ' . Wordstrike::$table_prefix . 'words_books_words WHERE books_id = ' . $booksId . ' ORDER BY rand() limit 1';
+            $queryWordsId = "SELECT words_id FROM {$this->$tablePrefix}words_books_words
+                                        WHERE books_id = $booksId ORDER BY rand() limit 1";
         } else {
-            $queryWordsId = 'SELECT words_id FROM ' . Wordstrike::$table_prefix . 'words_books_words WHERE books_id = ' . $booksId . ' AND words_id NOT IN ('.$wordsIds.') ORDER BY rand() limit 1';
+            $queryWordsId = "SELECT words_id FROM {$this->$tablePrefix}words_books_words
+                                        WHERE books_id = $booksId
+                                        AND words_id NOT IN ('.$wordsIds.') ORDER BY rand() limit 1";
         }
 
         $wordsId = $wpdb->get_var($queryWordsId);
@@ -108,7 +83,8 @@ class Study
     public function isMyRecite($wordsId)
     {
         $wpdb   = $GLOBALS['wpdb'];
-        $query  = 'SELECT * FROM '.Wordstrike::$table_prefix.'recite WHERE words_id = '.$wordsId.' AND uid = '.$this->_uid;
+        $query  = "SELECT * FROM {$this->$tablePrefix}recite
+                        WHERE words_id = $wordsId AND uid = $this->uid";
         $result = $wpdb->get_row($query);
         return empty($result);
 
@@ -128,10 +104,10 @@ class Study
         $wpdb = $GLOBALS['wpdb'];
         if ($this->isMyRecite($wordsId) === true) {
             return $wpdb->insert(
-                Wordstrike::$table_prefix.'recite',
+                $this->$tablePrefix.'recite',
                 array(
                  'words_id'    => $wordsId,
-                 'uid'         => $this->_uid,
+                 'uid'         => $this->uid,
                  'level'       => $level,
                  'level_time'  => self::$level[$level],
                  'create_time' => time(),
@@ -144,7 +120,7 @@ class Study
             );
         } else {
             return $wpdb->update(
-                Wordstrike::$table_prefix.'recite',
+                $this->$tablePrefix.'recite',
                 array(
                  'act'         => 1,
                  'level'       => $level,
@@ -153,7 +129,7 @@ class Study
                 ),
                 array(
                  'words_id' => $wordsId,
-                 'uid'      => $this->_uid,
+                 'uid'      => $this->uid,
                 ),
                 array(
                  '%d', '%d', '%d', '%d',
@@ -170,15 +146,20 @@ class Study
     /**
      * 通过words_id获取一个单词
      *
-     * @param $words_id
+     * @param int $wordsId 单词id
+     *
      * @return mixed
      */
-    public function getWordById($words_id)
+    public function getWordById($wordsId)
     {
-        global $wpdb;
-        $query_one = "SELECT id, word_name, means, part, phonetic, voice FROM ".Wordstrike::$table_prefix."words WHERE id = ".$words_id." AND act = 1";
-        return $wpdb->get_row($query_one, ARRAY_A);
-    }
+        $wpdb     = $GLOBALS['wpdb'];
+        $queryOne = "SELECT id, word_name, means, part, phonetic, voice
+                                FROM {$this->$tablePrefix}words
+                                WHERE id = $wordsId AND act = 1";
+        return $wpdb->get_row($queryOne, ARRAY_A);
+
+    }//end getWordById()
+
 
     /**
      * 获取一个需要复习的生词.
@@ -187,27 +168,36 @@ class Study
      */
     public function getOneReviewWord()
     {
-        global $wpdb;
-        $now = time();
-        $query = "SELECT words_id FROM ".Wordstrike::$table_prefix."recite WHERE uid = ".$this->uid." AND ".$now." - update_time >= level_time AND act = 1 order by update_time LIMIT 1";
-        $words_id = $wpdb->get_var($query);
-        return $this->getWordById($words_id);
-    }
+        $wpdb    = $GLOBALS['wpdb'];
+        $now     = time();
+        $query   = "SELECT words_id FROM {$this->$tablePrefix}recite
+                           WHERE uid = $this->uid AND $now - update_time >= level_time AND act = 1
+                           order by update_time LIMIT 1";
+        $wordsId = $wpdb->get_var($query);
+        return $this->getWordById($wordsId);
+
+    }//end getOneReviewWord()
+
 
     /**
-     * 获取一个大于开始时间的复习生词.
+     * 获取一个大于开始学习时间的复习生词
      *
-     * @param $begin
+     * @param int $begin 开始学习的时间
+     *
      * @return mixed
      */
     public function getOneReviewWordAfterBegin($begin)
     {
-        global $wpdb;
-        $now = time();
-        $query = "SELECT words_id FROM ".Wordstrike::$table_prefix."recite WHERE uid = ".$this->uid." AND ".$now." - update_time >= level_time AND create_time > ".$begin." AND act = 1 order by update_time LIMIT 1";
-        $words_id = $wpdb->get_var($query);
-        return $this->getWordById($words_id);
-    }
+        $wpdb    = $GLOBALS['wpdb'];
+        $now     = time();
+        $query   = "SELECT words_id FROM {$this->$tablePrefix}recite
+                        WHERE uid = $this->uid AND $now - update_time >= level_time AND create_time > $begin AND act = 1
+                        order by update_time LIMIT 1";
+        $wordsId = $wpdb->get_var($query);
+        return $this->getWordById($wordsId);
+
+    }//end getOneReviewWordAfterBegin()
+
 
     /**
      * 获取当前用户的一个单词等级
@@ -218,7 +208,7 @@ class Study
     public function getLevelById($words_id)
     {
         global $wpdb;
-        $query = "SELECT `level` FROM ".Wordstrike::$table_prefix."recite WHERE words_id = ".$words_id." AND uid = ".$this->uid." AND act = 1";
+        $query = "SELECT `level` FROM {$this->$tablePrefix}recite WHERE words_id = ".$words_id." AND uid = ".$this->uid." AND act = 1";
         return (int)$wpdb->get_var($query);
     }
 
@@ -275,7 +265,7 @@ class Study
     {
         global $wpdb;
         $today = strtotime("today");
-        $query = "SELECT count(1) FROM ".Wordstrike::$table_prefix."recite WHERE uid = ".$this->uid."  AND create_time >= ".$today." AND act = 1";
+        $query = "SELECT count(1) FROM {$this->$tablePrefix}recite WHERE uid = ".$this->uid."  AND create_time >= ".$today." AND act = 1";
         return $wpdb->get_var($query);
     }
 }

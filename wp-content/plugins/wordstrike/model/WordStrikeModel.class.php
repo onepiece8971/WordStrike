@@ -29,7 +29,7 @@ class WordStrikeModel extends BaseModel
      *
      * @var string
      */
-    public static $tablePrefix = 'ws_';
+    private static $_tablePrefix;
 
     /**
      * sql集合.
@@ -54,13 +54,29 @@ class WordStrikeModel extends BaseModel
 
 
     /**
+     * 获取数据库表前缀
+     *
+     * @return string
+     */
+    public static function getTablePrefix()
+    {
+        if (empty(self::$_tablePrefix) === true) {
+            self::$_tablePrefix = $GLOBALS['wordStrikePrefix'];
+        }
+
+        return self::$_tablePrefix;
+
+    }//end getTablePrefix()
+
+
+    /**
      * 新建$sqlArray
      *
      * @return void
      */
-    private function _createSql()
+    private static function _createSql()
     {
-        $tablePrefix = self::$tablePrefix;
+        $tablePrefix = self::getTablePrefix();
         // 单词表.
         self::$sqlArray['words'] = "CREATE TABLE IF NOT EXISTS `{$tablePrefix}words` (
     			id int NOT NULL PRIMARY KEY auto_increment,
