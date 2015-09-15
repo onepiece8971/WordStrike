@@ -32,7 +32,7 @@ class WordStrikeModel extends BaseModel
     public static $tablePrefix = 'ws_';
 
     /**
-     * ql集合.
+     * sql集合.
      *
      * @var array
      */
@@ -112,7 +112,7 @@ class WordStrikeModel extends BaseModel
     			KEY uid (uid)
     			) DEFAULT CHARSET=utf8";
 
-    }//end createSql()
+    }//end _createSql()
 
 
 }//end class
