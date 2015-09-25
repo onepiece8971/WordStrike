@@ -50,23 +50,11 @@ class Study extends Base
             $booksId = 1;
         }
 
-        $wpdb = $GLOBALS['wpdb'];
         // 取出背词表的所有wordsIds, 并拼接为字符串.
         $wordsIds = ReciteModel::init()->getCurrentUserReciteWordIds();
         $wordsIds = Utility::getArrayValues($wordsIds, 'words_id');
-        $count    = count($wordsIds);
-        $wordsIds = implode(', ', $wordsIds);
-        // 没有已背单词.
-        if ($count === 0) {
-            $queryWordsId = "SELECT words_id FROM {$this->$tablePrefix}words_books_words
-                                        WHERE books_id = $booksId ORDER BY rand() limit 1";
-        } else {
-            $queryWordsId = "SELECT words_id FROM {$this->$tablePrefix}words_books_words
-                                        WHERE books_id = $booksId
-                                        AND words_id NOT IN ('.$wordsIds.') ORDER BY rand() limit 1";
-        }
 
-        $wordsId = $wpdb->get_var($queryWordsId);
+        $wordsId = WordsBooksWordsModel::init()->randWordIdByBooksIdInWordsIds($booksId, $wordsIds);
         // 取得一个单词信息.
         return $this->getWordById($wordsId);
 
@@ -84,7 +72,7 @@ class Study extends Base
     {
         $wpdb   = $GLOBALS['wpdb'];
         $query  = "SELECT * FROM {$this->$tablePrefix}recite
-                        WHERE words_id = $wordsId AND uid = $this->uid";
+                   WHERE words_id = $wordsId AND uid = $this->uid";
         $result = $wpdb->get_row($query);
         return empty($result);
 
@@ -154,8 +142,8 @@ class Study extends Base
     {
         $wpdb     = $GLOBALS['wpdb'];
         $queryOne = "SELECT id, word_name, means, part, phonetic, voice
-                                FROM {$this->$tablePrefix}words
-                                WHERE id = $wordsId AND act = 1";
+                     FROM {$this->$tablePrefix}words
+                     WHERE id = $wordsId AND act = 1";
         return $wpdb->get_row($queryOne, ARRAY_A);
 
     }//end getWordById()

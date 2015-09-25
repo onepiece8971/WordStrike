@@ -25,13 +25,6 @@ class WordStrikeModel extends BaseModel
 {
 
     /**
-     * 数据库表前缀.
-     *
-     * @var string
-     */
-    private static $_tablePrefix;
-
-    /**
      * sql集合.
      *
      * @var array
@@ -40,33 +33,15 @@ class WordStrikeModel extends BaseModel
 
 
     /**
-     * 初始化方法
+     * 实例化类
      *
-     * @return mixed
+     * @return object
      */
     public static function init()
     {
-        if (empty(self::$sqlArray) === true) {
-            self::_createSql();
-        }
+        return parent::instance(__CLASS__);
 
     }//end init()
-
-
-    /**
-     * 获取数据库表前缀
-     *
-     * @return string
-     */
-    public static function getTablePrefix()
-    {
-        if (empty(self::$_tablePrefix) === true) {
-            self::$_tablePrefix = $GLOBALS['wordStrikePrefix'];
-        }
-
-        return self::$_tablePrefix;
-
-    }//end getTablePrefix()
 
 
     /**
@@ -74,9 +49,9 @@ class WordStrikeModel extends BaseModel
      *
      * @return void
      */
-    private static function _createSql()
+    private function _createSql()
     {
-        $tablePrefix = self::getTablePrefix();
+        $tablePrefix = $this->tablePrefix;
         // 单词表.
         self::$sqlArray['words'] = "CREATE TABLE IF NOT EXISTS `{$tablePrefix}words` (
     			id int NOT NULL PRIMARY KEY auto_increment,
@@ -129,6 +104,37 @@ class WordStrikeModel extends BaseModel
     			) DEFAULT CHARSET=utf8";
 
     }//end _createSql()
+
+
+    /**
+     * 初始化slq语句
+     *
+     * @return mixed
+     */
+    protected function createSql()
+    {
+        if (empty(self::$sqlArray) === true) {
+            $this->_createSql();
+        }
+
+    }//end createSql()
+
+
+    /**
+     * 新建表
+     *
+     * @param string $tableName 表名
+     * @param string $sql       sql语句
+     *
+     * @return void
+     */
+    protected function createTable($tableName, $sql)
+    {
+        if ($this->wpDb->get_var("show tables like '$tableName'") !== $tableName) {
+            dbDelta($sql);
+        }
+
+    }//end createTable()
 
 
 }//end class

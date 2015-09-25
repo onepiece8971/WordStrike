@@ -64,7 +64,7 @@ class ReciteModel extends BaseModel
     public function getCurrentUserReciteWordIds()
     {
         $query = "SELECT words_id FROM {$this->$tablePrefix}recite
-                                 WHERE uid = $this->uid AND act != 0";
+                  WHERE uid = $this->uid AND act != 0";
         return $this->wpDb->get_results($query, ARRAY_A);
 
     }//end getCurrentUserReciteWordIds()

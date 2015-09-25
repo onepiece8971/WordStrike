@@ -35,32 +35,14 @@ class WordStrike
     public static function init()
     {
         if (empty(WordStrikeModel::$sqlArray) === true) {
-            WordStrikeModel::init();
+            WordStrikeModel::init()->createSql();
         }
 
         foreach (WordStrikeModel::$sqlArray as $tableName => $sql) {
-            self::_createTable($tableName, $sql);
+            WordStrikeModel::init()->createTable($tableName, $sql);
         }
 
     }//end init()
-
-
-    /**
-     * 新建表
-     *
-     * @param string $tableName 表名
-     * @param string $sql       sql语句
-     *
-     * @return void
-     */
-    private function _createTable($tableName, $sql)
-    {
-        $wpdb = $GLOBALS['wpdb'];
-        if ($wpdb->get_var("show tables like '$tableName'") !== $tableName) {
-            dbDelta($sql);
-        }
-
-    }//end _createTable()
 
 
 }//end class

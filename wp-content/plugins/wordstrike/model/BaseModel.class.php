@@ -66,7 +66,7 @@ class BaseModel
 
         // 获取表前缀.
         if (empty($this->tablePrefix) === true) {
-            $this->tablePrefix = WordStrikeModel::getTablePrefix();
+            $this->tablePrefix = $GLOBALS['wordStrikePrefix'];
         }
 
         // 获取wordpress db class.
