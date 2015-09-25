@@ -36,21 +36,21 @@ class BaseModel
      *
      * @var
      */
-    protected $tablePrefix;
+    protected static $tablePrefix;
 
     /**
      * 用户id
      *
      * @var int
      */
-    protected $uid;
+    protected static $uid;
 
     /**
      * wordpress db class
      *
      * @var
      */
-    protected $wpDb;
+    protected static $wpDb;
 
 
     /**
@@ -59,18 +59,18 @@ class BaseModel
     public function __construct()
     {
         // 获取当前用户id.
-        if (empty($this->uid) === true) {
+        if (empty(self::$uid) === true) {
             $currentUser = wp_get_current_user();
             $this->uid   = $currentUser->ID;
         }
 
         // 获取表前缀.
-        if (empty($this->tablePrefix) === true) {
+        if (empty(self::$tablePrefix) === true) {
             $this->tablePrefix = $GLOBALS['wordStrikePrefix'];
         }
 
         // 获取wordpress db class.
-        if (empty($this->$wpDb) === true) {
+        if (empty(self::$wpDb) === true) {
             $this->$wpDb = $GLOBALS['wpdb'];
         }
 
