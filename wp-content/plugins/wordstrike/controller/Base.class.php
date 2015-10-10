@@ -33,33 +33,20 @@ class Base
 
 
     /**
-     * 初始化方法
+     * 工厂方法
      *
      * @return mixed
      */
     public static function init()
     {
-        return self::instance(__CLASS__);
-
-    }//end init()
-
-
-    /**
-     * 工厂方法
-     *
-     * @param string $className 类名
-     *
-     * @return mixed
-     */
-    static protected function instance($className)
-    {
+        $className = get_called_class();
         if (isset(self::$instances[$className]) === false) {
             self::$instances[$className] = new $className();
         }
 
         return self::$instances[$className];
 
-    }//end instance()
+    }//end init()
 
 
 }//end class

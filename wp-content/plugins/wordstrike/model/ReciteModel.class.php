@@ -45,18 +45,6 @@ class ReciteModel extends BaseModel
 
 
     /**
-     * 实例化类
-     *
-     * @return object
-     */
-    public static function init()
-    {
-        return parent::instance(__CLASS__);
-
-    }//end init()
-
-
-    /**
      * 获取当前用户背词本所有单词id
      *
      * @return mixed

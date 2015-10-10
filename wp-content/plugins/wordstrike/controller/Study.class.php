@@ -26,18 +26,6 @@ class Study extends Base
 
 
     /**
-     * 实例化类
-     *
-     * @return object
-     */
-    public static function init()
-    {
-        parent::instance(__CLASS__);
-
-    }//end init()
-
-
-    /**
      * 随机获取生词本中一个未背的单词
      *
      * @param int $booksId 生词本id

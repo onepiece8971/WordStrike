@@ -61,12 +61,12 @@ class BaseModel
         // 获取当前用户id.
         if (empty(self::$uid) === true) {
             $currentUser = wp_get_current_user();
-            $this->uid   = $currentUser->ID;
+            self::$uid   = $currentUser->ID;
         }
 
         // 获取表前缀.
         if (empty(self::$tablePrefix) === true) {
-            $this->tablePrefix = $GLOBALS['wordStrikePrefix'];
+            self::$tablePrefix = $GLOBALS['wordStrikePrefix'];
         }
 
         // 获取wordpress db class.
@@ -78,33 +78,20 @@ class BaseModel
 
 
     /**
-     * 初始化方法
+     * 工厂方法
      *
      * @return mixed
      */
     public static function init()
     {
-        return self::instance(__CLASS__);
-
-    }//end init()
-
-
-    /**
-     * 工厂方法
-     *
-     * @param string $className 类名
-     *
-     * @return mixed
-     */
-    static protected function instance($className)
-    {
+        $className = get_called_class();
         if (isset(self::$instances[$className]) === false) {
             self::$instances[$className] = new $className();
         }
 
         return self::$instances[$className];
 
-    }//end instance()
+    }//end init()
 
 
 }//end class

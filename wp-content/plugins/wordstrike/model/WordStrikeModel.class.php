@@ -33,18 +33,6 @@ class WordStrikeModel extends BaseModel
 
 
     /**
-     * 实例化类
-     *
-     * @return object
-     */
-    public static function init()
-    {
-        return parent::instance(__CLASS__);
-
-    }//end init()
-
-
-    /**
      * 新建$sqlArray
      *
      * @return void
