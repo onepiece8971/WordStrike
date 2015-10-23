@@ -44,27 +44,9 @@ class Study extends Base
 
         $wordsId = WordsBooksWordsModel::init()->randWordIdByBooksIdInWordsIds($booksId, $wordsIds);
         // 取得一个单词信息.
-        return $this->getWordById($wordsId);
+        return WordsModel::init()->getWordById($wordsId);
 
     }//end randOneWord()
-
-
-    /**
-     * 返回我的背词本中是否存在该单词.
-     *
-     * @param int $wordsId 单词id
-     *
-     * @return bool
-     */
-    public function isMyRecite($wordsId)
-    {
-        $wpdb   = $GLOBALS['wpdb'];
-        $query  = "SELECT * FROM {$this->$tablePrefix}recite
-                   WHERE words_id = $wordsId AND uid = $this->uid";
-        $result = $wpdb->get_row($query);
-        return empty($result);
-
-    }//end isMyRecite()
 
 
     /**
@@ -77,140 +59,38 @@ class Study extends Base
      */
     public function addRecite($wordsId, $level=1)
     {
-        $wpdb = $GLOBALS['wpdb'];
-        if ($this->isMyRecite($wordsId) === true) {
-            return $wpdb->insert(
-                $this->$tablePrefix.'recite',
-                array(
-                 'words_id'    => $wordsId,
-                 'uid'         => $this->uid,
-                 'level'       => $level,
-                 'level_time'  => self::$level[$level],
-                 'create_time' => time(),
-                 'update_time' => time(),
-                 'act'         => 1,
-                ),
-                array(
-                 '%d', '%d', '%d', '%d', '%d', '%d', '%d',
-                )
-            );
-        } else {
-            return $wpdb->update(
-                $this->$tablePrefix.'recite',
-                array(
-                 'act'         => 1,
-                 'level'       => $level,
-                 'level_time'  => self::$level[$level],
-                 'update_time' => time(),
-                ),
-                array(
-                 'words_id' => $wordsId,
-                 'uid'      => $this->uid,
-                ),
-                array(
-                 '%d', '%d', '%d', '%d',
-                ),
-                array(
-                 '%d', '%d',
-                )
-            );
-        }//end if
+        return ReciteModel::init()->addRecite($wordsId, $level);
 
     }//end addRecite()
 
 
     /**
-     * 通过words_id获取一个单词
-     *
-     * @param int $wordsId 单词id
-     *
-     * @return mixed
-     */
-    public function getWordById($wordsId)
-    {
-        $wpdb     = $GLOBALS['wpdb'];
-        $queryOne = "SELECT id, word_name, means, part, phonetic, voice
-                     FROM {$this->$tablePrefix}words
-                     WHERE id = $wordsId AND act = 1";
-        return $wpdb->get_row($queryOne, ARRAY_A);
-
-    }//end getWordById()
-
-
-    /**
-     * 获取一个需要复习的生词.
-     *
-     * @return mixed
-     */
-    public function getOneReviewWord()
-    {
-        $wpdb    = $GLOBALS['wpdb'];
-        $now     = time();
-        $query   = "SELECT words_id FROM {$this->$tablePrefix}recite
-                           WHERE uid = $this->uid AND $now - update_time >= level_time AND act = 1
-                           order by update_time LIMIT 1";
-        $wordsId = $wpdb->get_var($query);
-        return $this->getWordById($wordsId);
-
-    }//end getOneReviewWord()
-
-
-    /**
-     * 获取一个大于开始学习时间的复习生词
+     * 获取一个需要复习或大于开始学习时间的生词.
      *
      * @param int $begin 开始学习的时间
      *
      * @return mixed
      */
-    public function getOneReviewWordAfterBegin($begin)
+    public function getOneReviewWord($begin=0)
     {
-        $wpdb    = $GLOBALS['wpdb'];
-        $now     = time();
-        $query   = "SELECT words_id FROM {$this->$tablePrefix}recite
-                        WHERE uid = $this->uid AND $now - update_time >= level_time AND create_time > $begin AND act = 1
-                        order by update_time LIMIT 1";
-        $wordsId = $wpdb->get_var($query);
-        return $this->getWordById($wordsId);
+        return ReciteModel::init()->getOneReviewWord($begin);
 
-    }//end getOneReviewWordAfterBegin()
+    }//end getOneReviewWord()
 
-
-    /**
-     * 获取当前用户的一个单词等级
-     *
-     * @param $words_id
-     * @return mixed
-     */
-    public function getLevelById($words_id)
-    {
-        global $wpdb;
-        $query = "SELECT `level` FROM {$this->$tablePrefix}recite WHERE words_id = ".$words_id." AND uid = ".$this->uid." AND act = 1";
-        return (int)$wpdb->get_var($query);
-    }
 
     /**
      * 升级单词.
      *
-     * @param $words_id
+     * @param int $wordsId 单词id
+     *
      * @return mixed
      */
-    public function upgradeReciteWord($words_id)
+    public function upgradeReciteWord($wordsId)
     {
-        global $wpdb;
-        $level = $this->getLevelById($words_id); //获取单词当前等级
-        if (9 == $level) {
-            $level = 9;
-        } else {
-            ++$level;
-        }
-        return $wpdb->update(
-            Wordstrike::$table_prefix."recite",
-            array('level' => $level, 'level_time' => self::$level[$level], 'update_time' => time()),
-            array('words_id' => $words_id, 'uid' => $this->uid),
-            array('%d', '%d', '%d'),
-            array('%d', '%d')
-        );
-    }
+        return ReciteModel::init()->upgradeReciteWord($wordsId);
+
+    }//end upgradeReciteWord()
+
 
     /**
      * 忘记单词.
@@ -274,12 +154,6 @@ function forgetReciteWord($words_id)
 {
     $study = new study;
     return $study->forgetReciteWord($words_id);
-}
-
-function getOneReviewWordAfterBegin($begin)
-{
-    $study = new study;
-    return $study->getOneReviewWordAfterBegin($begin);
 }
 
 function getTodayReciteWordCount()

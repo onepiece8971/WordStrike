@@ -71,7 +71,7 @@ class BaseModel
 
         // 获取wordpress db class.
         if (empty(self::$wpDb) === true) {
-            $this->$wpDb = $GLOBALS['wpdb'];
+            self::$wpDb = $GLOBALS['wpdb'];
         }
 
     }//end __construct()
@@ -92,6 +92,21 @@ class BaseModel
         return self::$instances[$className];
 
     }//end init()
+
+
+    /**
+     * 判断数据是否存在
+     *
+     * @param string $query SQL语句
+     *
+     * @return bool
+     */
+    public function exists($query)
+    {
+        $result = self::$wpDb->get_row($query);
+        return empty($result);
+
+    }//end exists()
 
 
 }//end class
