@@ -244,7 +244,7 @@ class ReciteModel extends BaseModel
             ),
             array(
              'words_id' => $wordsId,
-             'uid'      => $this->uid,
+             'uid'      => self::$uid,
             ),
             array(
              '%d', '%d', '%d',
@@ -255,6 +255,57 @@ class ReciteModel extends BaseModel
         );
 
     }//end upgradeReciteWord()
+
+
+    /**
+     * 忘记单词.
+     *
+     * @param int $wordsId 单词id.
+     *
+     * @return mixed
+     */
+    public function forgetReciteWord($wordsId)
+    {
+        $level = $this->getLevelById($wordsId);
+        if (0 === $level) {
+            $level = -1;
+        }
+
+        return self::$wpDb->update(
+            self::$tableName,
+            array(
+             'update_time' => time(),
+             'level'       => $level,
+             'level_time'  => self::$level[$level],
+            ),
+            array(
+             'words_id' => $wordsId,
+             'uid'      => self::$uid,
+            ),
+            array(
+             '%d', '%d', '%d',
+            ),
+            array(
+             '%d', '%d',
+            )
+        );
+
+    }//end forgetReciteWord()
+
+
+    /**
+     * 获取当前用户今天已背单词数.
+     *
+     * @return null|string
+     */
+    public function getTodayReciteWordCount()
+    {
+        $today = strtotime('today');
+        $query = 'SELECT count(1) FROM '.self::$tableName.'
+                  WHERE uid = '.self::$uid.' AND create_time >= '.$today.' AND act = 1';
+        return self::$wpDb->get_var($query);
+
+    }//end getTodayReciteWordCount()
 
 
 }//end class

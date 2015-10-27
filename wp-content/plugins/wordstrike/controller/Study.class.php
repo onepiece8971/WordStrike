@@ -95,22 +95,16 @@ class Study extends Base
     /**
      * 忘记单词.
      *
-     * @param $words_id
+     * @param int $wordsId 单词id.
+     *
      * @return mixed
      */
-    public function forgetReciteWord($words_id)
+    public function forgetReciteWord($wordsId)
     {
-        global $wpdb;
-        $level = $this->getLevelById($words_id);
-        $level = 0 === $level ? -1 : 0;
-        return $wpdb->update(
-            Wordstrike::$table_prefix."recite",
-            array('update_time' => time(), 'level' => $level, 'level_time' => self::$level[$level]),
-            array('words_id' => $words_id, 'uid' => $this->uid),
-            array('%d', '%d', '%d'),
-            array('%d', '%d')
-        );
-    }
+        return ReciteModel::init()->forgetReciteWord($wordsId);
+
+    }//end forgetReciteWord()
+
 
     /**
      * 获取当前用户今天已背单词数.
@@ -119,45 +113,11 @@ class Study extends Base
      */
     public function getTodayReciteWordCount()
     {
-        global $wpdb;
-        $today = strtotime("today");
-        $query = "SELECT count(1) FROM {$this->$tablePrefix}recite WHERE uid = ".$this->uid."  AND create_time >= ".$today." AND act = 1";
-        return $wpdb->get_var($query);
-    }
-}
+        return ReciteModel::init()->getTodayReciteWordCount();
 
-function randOneWord()
-{
-    $study = new study;
-    return $study->randOneWord($_GET['b']);
-}
+    }//end getTodayReciteWordCount()
 
-function addRecite($words_id, $level = 1)
-{
-    $study = new study;
-    return $study->addRecite($words_id, $level);
-}
 
-function getOneReviewWord()
-{
-    $study = new study;
-    return $study->getOneReviewWord();
-}
+}//end class
 
-function upgradeReciteWord($words_id)
-{
-    $study = new study;
-    return $study->upgradeReciteWord($words_id);
-}
-
-function forgetReciteWord($words_id)
-{
-    $study = new study;
-    return $study->forgetReciteWord($words_id);
-}
-
-function getTodayReciteWordCount()
-{
-    $study = new study;
-    return $study->getTodayReciteWordCount();
-}
+?>
