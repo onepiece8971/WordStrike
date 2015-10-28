@@ -24,6 +24,25 @@
 class WordsBooksWordsModel extends BaseModel
 {
 
+    /**
+     * @var string 表名
+     */
+    public static $tableName;
+
+
+    /**
+     * 初始化参数
+     */
+    public function __construct()
+    {
+        if (empty(self::$tableName) === true) {
+            self::$tableName = $this->$tablePrefix.'words_books_words';
+        }
+
+        parent::__construct();
+
+    }//end __construct()
+
 
     /**
      * 随机获取一个已背生词id
@@ -39,17 +58,34 @@ class WordsBooksWordsModel extends BaseModel
         $wordsIds = implode(', ', $wordsIds);
         // 没有已背单词.
         if ($count === 0) {
-            $queryWordsId = "SELECT words_id FROM {$this->$tablePrefix}words_books_words
-                             WHERE books_id = $booksId ORDER BY rand() limit 1";
+            $queryWordsId = 'SELECT words_id FROM '.self::$tableName.'
+                             WHERE books_id = '.$booksId.' ORDER BY rand() limit 1';
         } else {
-            $queryWordsId = "SELECT words_id FROM {$this->$tablePrefix}words_books_words
-                             WHERE books_id = $booksId
-                             AND words_id NOT IN ($wordsIds) ORDER BY rand() limit 1";
+            $queryWordsId = 'SELECT words_id FROM '.self::$tableName.'
+                             WHERE books_id = '.$booksId.'
+                             AND words_id NOT IN ('.$wordsIds.') ORDER BY rand() limit 1';
         }
 
-        return $this->wpDb->get_var($queryWordsId);
+        return self::$wpDb->get_var($queryWordsId);
 
     }//end randWordIdByBooksIdInWordsIds()
+
+
+    /**
+     * 获取当前用户所有生词本单词
+     *
+     * @param array $booksIds 单词本id
+     *
+     * @return mixed
+     */
+    public function getAllWordsCount($booksIds)
+    {
+        $booksIds = implode(',', $booksIds);
+        $query    = 'SELECT COUNT(DISTINCT words_id) FROM '.self::$tableName.'
+                     where books_id IN ('.$booksIds.')';
+        return self::$wpDb->get_var($query);
+
+    }//end getAllWordsCount()
 
 
 }//end class

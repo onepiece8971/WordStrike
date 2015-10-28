@@ -192,7 +192,8 @@ class ReciteModel extends BaseModel
                       order by update_time LIMIT 1';
         } else {
             $query = 'SELECT words_id FROM '.self::$tableName.'
-                      WHERE uid = '.self::$uid.' AND '.$now.' - update_time >= level_time AND create_time > '.$begin.' AND act = 1
+                      WHERE uid = '.self::$uid.' AND '.$now.' - update_time >= level_time AND create_time > '.$begin.'
+                      AND act = 1
                       order by update_time LIMIT 1';
         }
 
@@ -211,7 +212,7 @@ class ReciteModel extends BaseModel
      */
     public function getLevelById($wordsId)
     {
-        $query = 'SELECT `level` FROM '.self::$tableName.'
+        $query = 'SELECT level FROM '.self::$tableName.'
                   WHERE words_id = '.$wordsId.' AND uid = '.self::$uid.' AND act = 1';
         return intval(self::$wpDb->get_var($query));
 
@@ -306,6 +307,31 @@ class ReciteModel extends BaseModel
         return self::$wpDb->get_var($query);
 
     }//end getTodayReciteWordCount()
+
+
+    /**
+     * 获取生词个数
+     *
+     * @param int $levelType 生词种类(生词0,熟词1,所有2)
+     *
+     * @return null|string
+     */
+    public function getWordsCount($levelType=0)
+    {
+        if ($levelType === 1) {
+            $query = 'SELECT count(1) FROM '.self::$tableName.'
+                  where uid = '.self::$uid.' AND level = 9  AND act = 1';
+        } else if ($levelType === 2) {
+            $query = 'SELECT count(1) FROM '.self::$tableName.'
+                  where uid = '.self::$uid.' AND act = 1';
+        } else {
+            $query = 'SELECT count(1) FROM '.self::$tableName.'
+                  where uid = '.self::$uid.' AND level != 9  AND act = 1';
+        }
+
+        return self::$wpDb->get_var($query);
+
+    }//end getWordsCount()
 
 
 }//end class
