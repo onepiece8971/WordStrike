@@ -59,6 +59,95 @@ class UserWordsBooksModel extends BaseModel
     }//end getMyWordsBookIds()
 
 
+    /**
+     * 添加生词本, 如果存在则更新act=1,不存在则insert
+     *
+     * @param int $bookId 单词本id
+     *
+     * @return mixed
+     */
+    public function addMyWordsBook($bookId)
+    {
+        if ($this->isMyWordsBook($bookId, null) === true) {
+            return self::$wpDb->insert(
+                self::$tableName,
+                array(
+                 'books_id'    => $bookId,
+                 'uid'         => self::$uid,
+                 'act'         => 1,
+                 'create_time' => time(),
+                ),
+                array(
+                 '%d', '%d', '%d',
+                )
+            );
+        } else {
+            return self::$wpDb->update(
+                self::$tableName,
+                array('act' => 1),
+                array(
+                 'books_id' => $bookId,
+                 'uid'      => self::$uid,
+                ),
+                array('%d'),
+                array(
+                 '%d', '%d',
+                )
+            );
+        }//end if
+
+    }//end addMyWordsBook()
+
+
+    /**
+     * 判断用户是否已添加相应生词本
+     *
+     * @param int $bookId 单词本id
+     * @param int $act    是否激活
+     *
+     * @return bool
+     */
+    public function isMyWordsBook($bookId, $act=1)
+    {
+        if (null === $act) {
+            $query = 'SELECT * FROM '.self::$tableName.'
+                      where books_id = '.$bookId.' and uid = '.self::$uid;
+        } else {
+            $query = 'SELECT * FROM '.self::$tableName.'
+                      where act = '.$act.' and books_id = '.$bookId.' and uid = '.self::$uid;
+        }
+
+        $row = self::$wpDb->get_row($query);
+        return empty($row);
+
+    }//end isMyWordsBook()
+
+
+    /**
+     * 删除用户生词本(静态删除)
+     *
+     * @param int $bookId 单词本id
+     *
+     * @return bool
+     */
+    public function delMyWordsBook($bookId)
+    {
+        return self::$wpDb->update(
+            self::$tableName,
+            array('act' => 0),
+            array(
+             'books_id' => $bookId,
+             'uid'      => self::$uid,
+            ),
+            array('%d'),
+            array(
+             '%d', '%d',
+            )
+        );
+
+    }//end delMyWordsBook()
+
+
 }//end class
 
 ?>

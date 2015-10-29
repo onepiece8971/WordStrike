@@ -88,6 +88,47 @@ class WordsBooksWordsModel extends BaseModel
     }//end getAllWordsCount()
 
 
+    /**
+     * 插入数据到words_books_words表
+     *
+     * @param int $bookId 生词本id
+     * @param int $wordId 单词id
+     *
+     * @return bool
+     */
+    public function insertWordsBooksWords($bookId, $wordId)
+    {
+        return self::$wpDb->insert(
+            self::$tableName,
+            array(
+             'books_id' => $bookId,
+             'words_id' => $wordId,
+            ),
+            array(
+             '%d', '%d',
+            )
+        );
+
+    }//end insertWordsBooksWords()
+
+
+    /**
+     * 通过booksId获取该生词本所有words_id.
+     *
+     * @param int $booksId 单词本id
+     *
+     * @return array
+     */
+    public function getWordsIdsByBooksId($booksId)
+    {
+        $query    = 'SELECT words_id FROM '.self::$tableName.'
+                     WHERE books_id = '.$booksId;
+        $wordsIds = self::$wpDb->get_results($query, ARRAY_A);
+        return Utility::getArrayValues($wordsIds, 'words_id');
+
+    }//end getWordsIdsByBooksId()
+
+
 }//end class
 
 ?>

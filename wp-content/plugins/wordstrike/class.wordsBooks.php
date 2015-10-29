@@ -1,5 +1,5 @@
 <?php
-class wordsBooks
+class wordsBooksBack
 {
     private static $n = 10;
     /**

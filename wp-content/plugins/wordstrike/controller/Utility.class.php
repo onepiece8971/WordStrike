@@ -50,7 +50,7 @@ class Utility
      *
      * @param string $str 字符串
      *
-     * @return mixed
+     * @return string|Null
      */
     public static function trimWord($str)
     {
