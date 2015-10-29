@@ -1,5 +1,5 @@
 <?php
-class words
+class wordsBack
 {
     public static $error_words = array();
     /**
