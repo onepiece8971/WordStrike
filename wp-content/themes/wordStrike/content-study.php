@@ -11,7 +11,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 $begin = $_SESSION['study_time'];
-$review = getOneReviewWordAfterBegin($begin);
+$review = getOneReviewWord($begin);
 ?>
 <body>
 <?php if (null == $review) : ?>

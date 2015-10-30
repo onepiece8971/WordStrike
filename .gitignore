@@ -3,4 +3,5 @@
 
 wp-config.php
 .sass-cache
+/wp-content/themes/wordStrike/apps/test.php
 wp-content/themes/wordStrike/test.php

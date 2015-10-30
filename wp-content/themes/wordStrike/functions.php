@@ -1,7 +1,9 @@
 <?php
-define('theme_apps', TEMPLATEPATH.'/apps');
+define('THEME_APPS', TEMPLATEPATH.'/apps');
 
-function IncludeAll($dir){
+//自动加载
+function IncludeApps($dir)
+{
     $dir = realpath($dir);
     if ($dir) {
         $files = scandir($dir);
@@ -16,7 +18,7 @@ function IncludeAll($dir){
     }//end if
 }
 
-IncludeAll( theme_apps );
+IncludeAll( THEME_APPS );
 
 /**
  * WordPress 后台禁用Google Open Sans字体，加速网站
