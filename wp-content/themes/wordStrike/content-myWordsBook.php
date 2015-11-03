@@ -66,10 +66,11 @@
 </div>
 <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/content/MyWordsBook.js"></script>
 <script>
-    var nonce = "<?php echo wp_create_nonce( 'WordStrike' ) ?>";
-    var url   = "<?php echo admin_url('admin-ajax.php'); ?>";
+    var nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
+        url     = "<?php echo admin_url('admin-ajax.php'); ?>",
+        handler = semantic.object.handler(nonce, url);
     // attach ready event
-    $(document).ready(semantic.ready(nonce, url));
+    $(document).ready(semantic.ready(handler));
 </script>
 </body>
 </html>

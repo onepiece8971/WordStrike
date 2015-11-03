@@ -51,54 +51,11 @@
 </body>
 
 <script>
-    semantic = {};
-    // ready event
-    semantic.ready = function () {
-        $('audio')[0].play(); //自动发音
-        var $upgrade = $('.upgrade'),
-             $show = $('#show'),
-            words_id = "<?php echo $word['id'] ?>";
-        handler = {
-            nonce : "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
-            url : "<?php echo admin_url('admin-ajax.php'); ?>",
-            upgrade: function(){
-                var type = $(this).attr('type');
-                $.post(
-                    handler.url,
-                    {_ajax_nonce:  handler.nonce, action: 'upgrade_my_recite', words_id: words_id, type: type},
-                    function(result){
-                        if (result == 1) {
-                            location.reload();
-                        }
-                    }
-                );
-//                console.log(level);
-            },
-            show: function(){
-                $show.hide();
-                $('#show2').show();
-            }
-        };
-        $upgrade.on('click', handler.upgrade);
-        $show.on('click', handler.show);
-        $('#play').click(function(){
-            $('audio')[0].play();
-        });
-
-        var width = $('.ui.text.container').width();
-        $('.bottom-button').width(width);
-        $('.bottom-button .button').width(width/2-50);
-    };
-    $(document).ready(semantic.ready).keydown(function(event){
-        if (event.keyCode == 38){
-            $('audio')[0].play();
-        } else if (event.keyCode == 37) {
-            $('.bottom-button .button.left').click();
-        } else if (event.keyCode == 39) {
-            $('.bottom-button .button.right').click();
-        } else if (event.keyCode == 40) {
-            handler.show();
-        }
-    });
+    var wordsId = "<?php echo $word['id'] ?>",
+        nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
+        url     = "<?php echo admin_url('admin-ajax.php'); ?>",
+        handler = semantic.object.handler(nonce, url, wordsId);
+    // attach ready event
+    $(document).ready(semantic.ready(handler)).keydown(handler.keyDownEvent);
 </script>
 </html>

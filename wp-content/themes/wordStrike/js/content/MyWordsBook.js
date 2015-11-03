@@ -39,12 +39,12 @@ semantic.object = {
 
     }
 };
+
 // ready event
-semantic.ready = function (nonce, url) {
+semantic.ready = function (handler) {
     // selector cache
     var $toggle = $('.ui.toggle.button'),
-        $a      = $('a'),
-        handler = semantic.object.handler(nonce, url);
+        $a      = $('a');
 
     $toggle.on('click', handler.activate);
     $toggle.state({
