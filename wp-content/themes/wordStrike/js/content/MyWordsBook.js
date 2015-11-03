@@ -3,8 +3,10 @@ semantic = {};
 semantic.object = {
     handler : function (nonce, url) {
         var $this = this;
+
         $this.nonce = nonce;
-        $this.url = url;
+        $this.url   = url;
+
         $this.activate = function () {
             var uid = $(this).attr('uid'),
                 books_id = $(this).attr('books_id');
@@ -32,7 +34,9 @@ semantic.object = {
                 }
             );
         };
-        return this;
+
+        return $this;
+
     }
 };
 // ready event
