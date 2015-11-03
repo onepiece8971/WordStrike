@@ -48,8 +48,8 @@
         </div>
     </div>
 <?php endif; ?>
-</body>
 
+<script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/content/Review.js"></script>
 <script>
     var wordsId = "<?php echo $word['id'] ?>",
         nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
@@ -58,4 +58,5 @@
     // attach ready event
     $(document).ready(semantic.ready(handler)).keydown(handler.keyDownEvent);
 </script>
+</body>
 </html>

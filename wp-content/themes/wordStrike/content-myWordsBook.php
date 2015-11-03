@@ -64,6 +64,7 @@
         <h1 class="ui center aligned header">您还没有添加生词本</h1>
     <?php endif; ?>
 </div>
+
 <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/content/MyWordsBook.js"></script>
 <script>
     var nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
