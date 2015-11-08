@@ -21,7 +21,7 @@ $review = getOneReviewWord($begin);
             <h1 class="ui center aligned header">该生词本已背完</h1>
         </div>
     <?php else : ?>
-        <span class="ui right floated header"><?php echo getTodayReciteWordCount(); ?>/20</span>
+        <span class="ui right floated header"><?php $todayCount = getTodayReciteWordCount(); echo $todayCount; ?>/20</span>
         <div class="margin100px">
             <h1 class="ui center aligned header"><?php echo $word['word_name']; ?></h1>
             <h4 class="ui center aligned header">
@@ -102,7 +102,7 @@ $review = getOneReviewWord($begin);
     var wordsId = "<?php echo $word['id'] ?>",
         nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
         url     = "<?php echo admin_url('admin-ajax.php'); ?>",
-        todayCount = "<?php echo $yodayCount ?>",
+        todayCount = "<?php echo $todayCount ?>",
         handler = semantic.object.handler(nonce, url, wordsId);
     // attach ready event
     $(document).ready(semantic.ready(handler, todayCount)).keydown(handler.keyDownEvent);
