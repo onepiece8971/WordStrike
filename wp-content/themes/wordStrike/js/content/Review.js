@@ -1,18 +1,18 @@
 semantic = {};
 
 semantic.object = {
-    handler : function (nonce, url, wordsId) {
+    handler: function (nonce, url, wordsId) {
         var $this = this;
 
         $this.nonce = nonce;
-        $this.url   = url;
+        $this.url = url;
 
-        $this.upgrade = function(){
+        $this.upgrade = function () {
             var type = $(this).attr('type');
             $.post(
                 $this.url,
-                {_ajax_nonce:  $this.nonce, action: 'upgrade_my_recite', words_id: wordsId, type: type},
-                function(result){
+                {_ajax_nonce: $this.nonce, action: 'upgrade_my_recite', words_id: wordsId, type: type},
+                function (result) {
                     if (result == 1) {
                         location.reload();
                     }
@@ -43,15 +43,15 @@ semantic.ready = function (handler) {
     $('audio')[0].play(); //自动发音
 
     var $upgrade = $('.upgrade'),
-        $show    = $('#show');
+        $show = $('#show');
 
     $upgrade.on('click', handler.upgrade);
     $show.on('click', handler.show);
-    $('#play').click(function(){
+    $('#play').click(function () {
         $('audio')[0].play();
     });
 
     var width = $('.ui.text.container').width();
     $('.bottom-button').width(width);
-    $('.bottom-button .button').width(width/2-50);
+    $('.bottom-button .button').width(width / 2 - 50);
 };

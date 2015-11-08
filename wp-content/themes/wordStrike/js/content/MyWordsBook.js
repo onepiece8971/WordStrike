@@ -1,11 +1,11 @@
 semantic = {};
 
 semantic.object = {
-    handler : function (nonce, url) {
+    handler: function (nonce, url) {
         var $this = this;
 
         $this.nonce = nonce;
-        $this.url   = url;
+        $this.url = url;
 
         $this.activate = function () {
             var uid = $(this).attr('uid'),
@@ -13,15 +13,15 @@ semantic.object = {
             if ($(this).hasClass('red')) {
                 $.post(
                     $this.url,
-                    {_ajax_nonce:  $this.nonce, action: 'del_my_words_book', uid: uid, books_id: books_id},
-                    function(result){
+                    {_ajax_nonce: $this.nonce, action: 'del_my_words_book', uid: uid, books_id: books_id},
+                    function (result) {
                         console.log(result);
                     }
                 );
             } else {
                 $.post(
                     $this.url,
-                    {_ajax_nonce:  $this.nonce, action: 'add_my_words_book', uid: uid, books_id: books_id}
+                    {_ajax_nonce: $this.nonce, action: 'add_my_words_book', uid: uid, books_id: books_id}
                 );
             }
         };
@@ -44,7 +44,7 @@ semantic.object = {
 semantic.ready = function (handler) {
     // selector cache
     var $toggle = $('.ui.toggle.button'),
-        $a      = $('a');
+        $a = $('a');
 
     $toggle.on('click', handler.activate);
     $toggle.state({
