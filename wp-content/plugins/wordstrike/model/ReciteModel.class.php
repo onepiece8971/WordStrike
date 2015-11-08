@@ -57,7 +57,7 @@ class ReciteModel extends BaseModel
     public function __construct()
     {
         if (empty(self::$tableName) === true) {
-            self::$tableName = $this->$tablePrefix.'recite';
+            self::$tableName = self::$tablePrefix.'recite';
         }
 
         parent::__construct();

@@ -41,7 +41,7 @@ class WordsBooksModel extends BaseModel
     public function __construct()
     {
         if (empty(self::$tableName) === true) {
-            self::$tableName = $this->$tablePrefix.'words_books';
+            self::$tableName = self::$tablePrefix.'words_books';
         }
 
         parent::__construct();

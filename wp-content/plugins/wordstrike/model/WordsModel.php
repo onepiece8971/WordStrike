@@ -43,7 +43,7 @@ class WordsModel extends BaseModel
     public function __construct()
     {
         if (empty(self::$tableName) === true) {
-            self::$tableName = $this->$tablePrefix.'words';
+            self::$tableName = self::$tablePrefix.'words';
         }
 
         parent::__construct();
