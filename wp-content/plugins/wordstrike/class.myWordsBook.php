@@ -88,4 +88,5 @@ function getUnstudiedCount()
 {
     $wordsBooks = new myWordsBook;
     return $wordsBooks->getAllWordsCount() - $wordsBooks->getAllReciteWordsCount();
+
 }
