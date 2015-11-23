@@ -2,14 +2,14 @@ semantic = {};
 
 semantic.object = {
     handler: function (nonce, url, wordsId) {
-        var $this = this;
-        $this.nonce = nonce;
-        $this.url = url;
-        $this.add = function () {
+
+        this.nonce = nonce;
+        this.url = url;
+        this.add = function () {
             var level = $(this).attr('level');
             $.post(
-                $this.url,
-                {_ajax_nonce: $this.nonce, action: 'add_my_recite', words_id: wordsId, level: level},
+                this.url,
+                {_ajax_nonce: this.nonce, action: 'add_my_recite', words_id: wordsId, level: level},
                 function (result) {
                     if (result == 1) {
                         location.reload();
@@ -17,11 +17,11 @@ semantic.object = {
                 }
             );
         };
-        $this.upgrade = function () {
+        this.upgrade = function () {
             var type = $(this).attr('type');
             $.post(
-                $this.url,
-                {_ajax_nonce: $this.nonce, action: 'upgrade_my_recite', words_id: wordsId, type: type},
+                this.url,
+                {_ajax_nonce: this.nonce, action: 'upgrade_my_recite', words_id: wordsId, type: type},
                 function (result) {
                     if (result == 1) {
                         location.reload();
@@ -29,11 +29,11 @@ semantic.object = {
                 }
             );
         };
-        $this.show = function () {
+        this.show = function () {
             $('#show').hide();
             $('#show2').show();
         };
-        $this.keyDownEvent = function (event) {
+        this.keyDownEvent = function (event) {
             if (event.keyCode == 38) {
                 $('audio')[0].play();
             } else if (event.keyCode == 37) {
@@ -41,7 +41,7 @@ semantic.object = {
             } else if (event.keyCode == 39) {
                 $('.bottom-button .button.right').click();
             } else if (event.keyCode == 40) {
-                $this.show();
+                this.show();
             }
         }
     }

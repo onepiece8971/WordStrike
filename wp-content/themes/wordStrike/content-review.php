@@ -54,7 +54,7 @@
     var wordsId = "<?php echo $word['id'] ?>",
         nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
         url     = "<?php echo admin_url('admin-ajax.php'); ?>",
-        handler = semantic.object.handler(nonce, url, wordsId);
+        handler = new semantic.object.handler(nonce, url, wordsId);
     // attach ready event
     $(document).ready(semantic.ready(handler)).keydown(handler.keyDownEvent);
 </script>

@@ -103,7 +103,7 @@ $review = getOneReviewWord($begin);
         nonce   = "<?php echo wp_create_nonce( 'WordStrike' ) ?>",
         url     = "<?php echo admin_url('admin-ajax.php'); ?>",
         todayCount = "<?php echo $todayCount ?>",
-        handler = semantic.object.handler(nonce, url, wordsId);
+        handler = new semantic.object.handler(nonce, url, wordsId);
     // attach ready event
     $(document).ready(semantic.ready(handler, todayCount)).keydown(handler.keyDownEvent);
 </script>
