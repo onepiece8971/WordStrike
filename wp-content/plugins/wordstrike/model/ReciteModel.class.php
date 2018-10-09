@@ -335,5 +335,3 @@ class ReciteModel extends BaseModel
 
 
 }//end class
-
-?>

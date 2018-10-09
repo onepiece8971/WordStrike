@@ -149,5 +149,3 @@ class UserWordsBooksModel extends BaseModel
 
 
 }//end class
-
-?>

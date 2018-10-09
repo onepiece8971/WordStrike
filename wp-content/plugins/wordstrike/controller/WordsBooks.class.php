@@ -113,7 +113,10 @@ class WordsBooks extends Base
             foreach ($words as $word) {
                 $w = Words::init()->getWordByWordName($word);
                 if (empty($w) === false && in_array($w['id'], $wordsIds) === false) {
-                    WordsBooksWordsModel::init()->insertWordsBooksWords($bookId, $w['id']);
+                    WordsBooksWordsModel::init()->insertWordsBooksWords(
+                        $bookId,
+                        $w['id']
+                    );
                 }
             }
         }
@@ -167,6 +170,7 @@ class WordsBooks extends Base
                     'percent' => 0,
                    );
         }
+
         return array(
                 'flag'    => 1,
                 'i'       => $ei,
@@ -205,5 +209,3 @@ class WordsBooks extends Base
 
 
 }//end class
-
-?>

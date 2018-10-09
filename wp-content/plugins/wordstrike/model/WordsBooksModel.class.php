@@ -30,7 +30,9 @@ class WordsBooksModel extends BaseModel
     const N = 10;
 
     /**
-     * @var string 表名
+     * 表名.
+     *
+     * @var string 表名.
      */
     public static $tableName;
 
@@ -60,7 +62,8 @@ class WordsBooksModel extends BaseModel
     {
         $bookIds = implode(', ', $bookIds);
         $query   = 'SELECT id, name, content, img_url FROM '.self::$tableName.'
-                    where id IN ('.$bookIds.') AND act = 1 ORDER BY create_time desc';
+                    where id IN ('.$bookIds.'
+                    ) AND act = 1 ORDER BY create_time desc';
         return self::$wpDb->get_results($query, ARRAY_A);
 
     }//end getWordsBooksByBookIds()
@@ -108,7 +111,8 @@ class WordsBooksModel extends BaseModel
     {
         $bookIds = implode(', ', $bookIds);
         $query   = 'SELECT id, name, content, img_url FROM '.self::$tableName.'
-                    where id IN ('.$bookIds.') AND act = 1 ORDER BY create_time desc';
+                    where id IN ('.$bookIds.'
+                    ) AND act = 1 ORDER BY create_time desc';
         return self::$wpDb->get_results($query, ARRAY_A);
 
     }//end getWordsBooksByUIds()
@@ -124,7 +128,7 @@ class WordsBooksModel extends BaseModel
         $p = @fopen(TEMPLATEPATH.'/books/book.txt', 'r');
         if ($p !== false) {
             $words = array();
-            while (!feof($p)) {
+            while (feof($p) === false) {
                 $word = Utility::trimWord(fgets($p));
                 if (empty($word) === false) {
                     array_push($words, $word);
@@ -161,7 +165,10 @@ class WordsBooksModel extends BaseModel
                  'create_time' => time(),
                 ),
                 array(
-                 '%s', '%s', '%s', '%d',
+                 '%s',
+                 '%s',
+                 '%s',
+                 '%d',
                 )
             );
         } else {
@@ -185,7 +192,11 @@ class WordsBooksModel extends BaseModel
                 $up,
                 array('name' => $name),
                 array(
-                 '%s', '%s', '%s', '%d', '%d',
+                 '%s',
+                 '%s',
+                 '%s',
+                 '%d',
+                 '%d',
                 ),
                 array('%s')
             );
@@ -209,5 +220,3 @@ class WordsBooksModel extends BaseModel
 
 
 }//end class
-
-?>
